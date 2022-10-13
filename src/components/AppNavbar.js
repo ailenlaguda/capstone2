@@ -10,7 +10,8 @@ export default function AppNavbar(){
 	return (
 			<Navbar expand="lg" sticky="top">
 				{/*<img src={require("../images/banner.png")} width="50"/>*/}
-				<Navbar.Brand className="ms-2" href="#">Bentuco National High School Faculty Cooperative Loan & Saving Management System</Navbar.Brand>
+				{/*<Navbar.Brand className="ms-2" href="#">Bentuco NHS Faculty Cooperative Loan & Saving Management System</Navbar.Brand>*/}
+				<Navbar.Brand className="ms-2" href="#">Loan & Saving Management System</Navbar.Brand>
 				<Navbar.Toggle aria-controls="basic-navbar-nav"/>
 
 				<Navbar.Collapse  id="basic-navbar-nav">

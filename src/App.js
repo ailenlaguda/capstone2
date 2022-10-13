@@ -32,7 +32,7 @@ function App() {
   return (
     <UserProvider value = {{user, setUser, unsetUser}}>
       <Router>
-        <AppNavBar />
+        <AppNavbar />
         <Container>
             <Routes>
               {/*<Route path="/" element={<Home />} />
@@ -54,4 +54,4 @@ function App() {
 
 export default App;
 // document.body.style.backgroundImage = "linear-gradient(to right, red, blue)";
- // document.body.style.backgroundImage = `linear-gradient(288deg, rgb(232, 218, 254) 0%, rgb(251, 229, 218) 100%)`
+ document.body.style.backgroundImage = `linear-gradient(288deg, rgb(232, 218, 254) 0%, rgb(251, 229, 218) 100%)`
