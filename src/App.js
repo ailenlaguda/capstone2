@@ -4,7 +4,7 @@ import  {Container} from "react-bootstrap";
 
 import './App.css';
 import AppNavbar from './components/AppNavbar';
-// import Home from'./pages/Home';
+import Home from'./pages/Home';
 // import Register from './pages/Register'
 // import Login from './pages/Login'
 // import Logout from './pages/Logout'
@@ -35,8 +35,8 @@ function App() {
         <AppNavbar />
         <Container>
             <Routes>
-              {/*<Route path="/" element={<Home />} />
-              <Route path="/contact" element={<Contact />} />
+              <Route path="/" element={<Home />} />
+              {/*<Route path="/contact" element={<Contact />} />
               <Route path='/register' element={<Register />} />
               <Route path='/login' element={<Login />} />
               <Route path='/logout' element={<Logout />} />
