@@ -1,6 +1,4 @@
 import React, {useState, useEffect, useContext, useRef} from 'react';
-import Banner from '../components/Banner';
-import Highlights from '../components/Highlights';
 import	{Form, Container, Row, Col, Button} from "react-bootstrap";
 import Swal from 'sweetalert2';
 import UserContext from '../UserContext';
@@ -86,14 +84,15 @@ export default function Home(){
 				// if(data.userType === "Chairman"){
 						
 						localStorage.setItem('email', data.email);
-						localStorage.setItem('userType', data.userType);
-						localStorage.setItem('firstName', data.firstName);
-						localStorage.setItem('middleName', data.middleName);
-						localStorage.setItem('lastName', data.lastName);
+						// localStorage.setItem('userType', data.userType);
+						// localStorage.setItem('firstName', data.firstName);
+						// localStorage.setItem('middleName', data.middleName);
+						// localStorage.setItem('lastName', data.lastName);
 						
 						setUser({
 							email: data.email,
-							userType: data.userType
+							userType: data.userType,
+							_id: data._id
 
 						})
 
@@ -162,6 +161,7 @@ export default function Home(){
 		// 	e.preventDefault();
 		
 	}
+	
 	const navToDashboard = () =>{
 		<Navigate to='/myAccount' />
 	}
@@ -169,7 +169,7 @@ export default function Home(){
 	return(
 		(user.accessToken !== null) ?
 					
-			<Navigate to="/" />
+			<Navigate to="/myAccount" />
 		:
 
 		<Container>

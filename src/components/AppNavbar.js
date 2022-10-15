@@ -23,7 +23,7 @@ export default function AppNavbar(){
 								{
 									(localStorage.getItem('userType', user.userType) === "member") ?
 										<>
-											<Nav.Link as={ Link } to='/'>Home</Nav.Link>
+											{/*<Nav.Link as={ Link } to='/'>Home</Nav.Link>*/}
 											<Nav.Link as={ Link } to='/myAccount'>MyAccount</Nav.Link>
 											<Nav.Link as={ Link } to='/announcements'>Announcements</Nav.Link>			
 											<Nav.Link as={ Link } to='/logout'>Logout</Nav.Link>
@@ -32,7 +32,7 @@ export default function AppNavbar(){
 
 										(localStorage.getItem('userType', user.userType) === "Chairperson")?
 											<>
-												<Nav.Link as={ Link } to='/'>Home</Nav.Link>
+												{/*<Nav.Link as={ Link } to='/'>Home</Nav.Link>*/}
 												<Nav.Link as={ Link } to='/myAccount'>My Account</Nav.Link>
 												<Nav.Link as={ Link } to='/loanApproval'>Loan Approval</Nav.Link>
 												<Nav.Link as={ Link } to='/announcements'>Announcements</Nav.Link>			
@@ -41,7 +41,7 @@ export default function AppNavbar(){
 											</>
 										:
 											<>
-												<Nav.Link as={ Link } to='/'>Home</Nav.Link>
+												{/*<Nav.Link as={ Link } to='/'>Home</Nav.Link>*/}
 												<Nav.Link as={ Link } to='/myAccount'>MyAccount</Nav.Link>
 												<Nav.Link as={ Link } to='/reports'>Reports</Nav.Link>
 												<Nav.Link as={ Link } to='/addTransaction'>Transactions</Nav.Link>
