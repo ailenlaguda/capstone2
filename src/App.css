@@ -10,6 +10,22 @@
   background-image: linear-gradient(rgb(232, 218, 254) 0%, rgb(251, 229, 218) 100%)
 }
 
+#title1{
+  font-family: 'Lobster', cursive;
+}
+
+.jumbotron {
+  background-image: url("images/bg-transparent.png") ;
+  background-size: cover;
+  background-position: center center;
+       padding-top: 10%;
+      /*padding-bottom: 15%;*/
+}
+
+.fontAwesome {
+  font-family: Helvetica, 'FontAwesome', sans-serif;
+}
+
 /*Page not found*/
       .starthird
     {

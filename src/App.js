@@ -7,7 +7,7 @@ import AppNavbar from './components/AppNavbar';
 import Home from'./pages/Home';
 // import Register from './pages/Register'
 // import Login from './pages/Login'
-// import Logout from './pages/Logout'
+import Logout from './pages/Logout'
 import PageNotFound from './components/PageNotFound'
 // import Footer from './components/Footer';
 // import Contact from './pages/Contact';
@@ -36,11 +36,10 @@ function App() {
         <Container>
             <Routes>
               <Route path="/" element={<Home />} />
-              {/*<Route path="/contact" element={<Contact />} />
-              <Route path='/register' element={<Register />} />
-              <Route path='/login' element={<Login />} />
+             {/* <Route path="/contact" element={<Contact />} />
+              <Route path='/register' element={<Register />} />*/}
               <Route path='/logout' element={<Logout />} />
-              */}<Route path='*' element={<PageNotFound />} />
+              <Route path='*' element={<PageNotFound />} />
             </Routes>
         </Container>  
         {/*<Footer /> */}
@@ -54,4 +53,5 @@ function App() {
 
 export default App;
 // document.body.style.backgroundImage = "linear-gradient(to right, red, blue)";
- document.body.style.backgroundImage = `linear-gradient(288deg, rgb(232, 218, 254) 0%, rgb(251, 229, 218) 100%)`
+ // document.body.style.backgroundImage = `linear-gradient(288deg, rgb(232, 218, 254) 0%, #F5CBDD 100%)`
+ document.body.style.backgroundColor = '#F5CBDD'
