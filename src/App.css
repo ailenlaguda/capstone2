@@ -18,8 +18,17 @@
   background-image: url("images/bg-transparent.png") ;
   background-size: cover;
   background-position: center center;
-       padding-top: 10%;
+       padding-top: 5%;
       /*padding-bottom: 15%;*/
+}
+
+.card-highlight{
+  background-image: linear-gradient(rgb(232, 218, 254) 0%, rgb(251, 229, 218) 100%)
+  /*background-image: linear-gradient(white 60%, #F5CBDD 100%);*/
+  /*background-image: linear-gradient(#EDDCF4 0%, #6C5E68 100%);*/
+  /*background-image: url("images/bg.png") ;*/
+  /*background-color: #F5CBDD;*/
+  /*color: #BD5F61;*/
 }
 
 .fontAwesome {

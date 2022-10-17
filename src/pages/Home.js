@@ -7,6 +7,7 @@ import {Link} from 'react-router-dom';
 import 'font-awesome/css/font-awesome.min.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye,faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import Banner from '../components/Banner';
 
 export default function Home(){
 	const [passwordShown, setPasswordShown] = useState(false);
@@ -78,81 +79,27 @@ export default function Home(){
 				
 				localStorage.setItem('accessToken', data.accessToken);					
 				localStorage.setItem('userType', data.userType);					
+				localStorage.setItem('id', data.id);					
+				localStorage.setItem('email', data.email);
 				
-				setUser({accessToken: data.accessToken})
+				setUser({
+					accessToken: data.accessToken,
+					email: data.email,
+					userType: data.userType,
+					_id: data._id
 
-				// if(data.userType === "Chairman"){
-						
-						localStorage.setItem('email', data.email);
-						// localStorage.setItem('userType', data.userType);
-						// localStorage.setItem('firstName', data.firstName);
-						// localStorage.setItem('middleName', data.middleName);
-						// localStorage.setItem('lastName', data.lastName);
-						
-						setUser({
-							email: data.email,
-							userType: data.userType,
-							_id: data._id
+				})
 
-						})
+				setEmail('');
+				setPassword('');
 
-						setEmail('');
-						setPassword('');
+				Swal.fire({
+				  title: 'Good job!',
+				  text: `Login successful! Welcome!`,
+				  icon:'success'
+				})
 
-						Swal.fire({
-						  title: 'Good job!',
-						  text: `Login successful! Welcome!`,
-						  icon:'success'
-						})
-
-						navigate('/myAccount')
-					// remove other options
-						// }else if(data.userType === "Treasurer"){
-							
-						// 	localStorage.setItem('email', data.email);
-						// 	localStorage.setItem('userType', data.position);
-						// 	localStorage.setItem('firstName', data.firstName);
-						// 	localStorage.setItem('middleName', data.middleName);
-						// 	localStorage.setItem('lastName', data.lastName);
-						// 	setUser({
-						// 		email: data.email,
-						// 		isAdmin: data.isAdmin
-
-						// 	})
-
-						// 	setEmail('');
-						// 	setPassword('');
-
-						// 	Swal.fire({
-						// 	  title: 'Good job!',
-						// 	  text: `Login successful! Welcome Admin!`,
-						// 	  icon:'success'
-						// 	})
-
-						// 	navigate('/TreasuereView')
-						// }else {
-						// 	localStorage.setItem('email', data.email);
-						// 	localStorage.setItem('position', data.position);
-						// 	localStorage.setItem('firstName', data.firstName);
-						// 	localStorage.setItem('middleName', data.middleName);
-						// 	localStorage.setItem('lastName', data.lastName);
-						// 	setUser({
-						// 		email: data.email,
-						// 		isAdmin: data.isAdmin
-
-						// 	})
-
-						// 	setEmail('');
-						// 	setPassword('');
-
-						// 	Swal.fire({
-						// 	  title: 'Good job!',
-						// 	  text: `Login successful! Welcome Admin!`,
-						// 	  icon:'success'
-						// 	})
-
-						// 	navigate('/memberView')
-						// } 
+				navigate('/myAccount')
 			}
 
 				
@@ -173,68 +120,54 @@ export default function Home(){
 		:
 
 		<Container>
-		    <link rel="stylesheet" href="index.css"/>
-		    <link rel="preconnect" href="https://fonts.googleapis.com"/>
-			<link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true"/>
-			<link href="https://fonts.googleapis.com/css2?family=Lobster&family=Open+Sans&display=swap" rel="stylesheet"/>
-		    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
-			
+		   
+		   <Row><Banner /></Row>
 			<Row className="justify-content-md-center">{/*
 				<Col xs={{ span: 12, order: 2 }} md={{ span: 6, order: 1 }}><Highlights /></Col>
 				<Col xs={{ span: 12, order: 1 }} md={{ span: 6, order: 2 }} ><Banner /></Col>*/}	
 
 				{/*<Row class="jumbotron text-center">*/}
-				
-				<div className="jumbotron container-fluid text-center">
-						<h1 id="title1" className="display-4 p-0 mt-0">Bentuco National High School Faculty Cooperative</h1>
-			  			<h3 className="display-5">Loan & Savings Management System</h3>
-			  		
-			  			<p className="lead"><strong>
-			  				“Stop being chained down by bad credit I have the key to set you free...”― Tyler Gregory
-			  			</strong></p>
-
-				  	 	<Col className="lead justify-content-md-center" s={12} md={6}>	
-							<Form className = "p-1 m-5" onSubmit={(e) => loginUser(e)} onClick = {()=>navToDashboard()}>
-								<Form.Group >
-									
-									<Form.Control 
-										type="email"
-										className = "fontAwesome"
-										placeholder = "&#xf0e0; ex.: juan@email.com"
-										required	
-										value={email}
-										onChange={e => setEmail(e.target.value)}
-									/>									 
-								</Form.Group>
-								<Form.Group className = "mt-3">								
-									<Form.Control 
-										type={passwordShown? "text" :"password" }
-										placeholder = "password"
-										required
-										value={password}
-										onChange={e => setPassword(e.target.value)}
-									/>
-									<span><FontAwesomeIcon 
-											onClick={togglePassword}
-											icon={!passwordShown ? faEyeSlash : faEye} 
-										/> Show/Hide Password</span>
-								</Form.Group>						
-								{isActive ?
-										<Row className="mt-3 p-3">
-											<Button className="loginBut" type="submit" > Login </Button>
-											<Button className="mt-1" variant="secondary" onClick={()=>routeChange()}> Cancel </Button>
-										</Row>
-										:
-										<Row className="mt-3 p-3" >
-											<Button className="loginBut" type="submit" disabled> Login </Button>
-											<Button className="mt-1" variant="secondary" onClick={()=>routeChange()}> Cancel </Button>
-										</Row>
-									}
-								<p className="text-center"> Not yet a user? Contact the administrator <Link to={'/register'}>here</Link></p>
-								
-							</Form>
-						</Col>
-				</div>
+		  	 	<Col className="lead justify-content-md-center" s={12} md={6}>	
+					<Form className = "p-1 m-5" onSubmit={(e) => loginUser(e)} onClick = {()=>navToDashboard()}>
+						<Form.Group >
+							
+							<Form.Control 
+								type="email"
+								className = "fontAwesome"
+								placeholder = "&#xf0e0; ex.: juan@email.com"
+								required	
+								value={email}
+								onChange={e => setEmail(e.target.value)}
+							/>									 
+						</Form.Group>
+						<Form.Group className = "mt-3">								
+							<Form.Control 
+								type={passwordShown? "text" :"password" }
+								placeholder = "password"
+								required
+								value={password}
+								onChange={e => setPassword(e.target.value)}
+							/>
+							<span><FontAwesomeIcon 
+									onClick={togglePassword}
+									icon={!passwordShown ? faEyeSlash : faEye} 
+								/> Show/Hide Password</span>
+						</Form.Group>						
+						{isActive ?
+								<Row className="mt-3 p-3">
+									<Button className="loginBut" type="submit" > Login </Button>
+									<Button className="mt-1" variant="secondary" onClick={()=>routeChange()}> Cancel </Button>
+								</Row>
+								:
+								<Row className="mt-3 p-3" >
+									<Button className="loginBut" type="submit" disabled> Login </Button>
+									<Button className="mt-1" variant="secondary" onClick={()=>routeChange()}> Cancel </Button>
+								</Row>
+							}
+						<p className="text-center"> Not yet a user? Contact the administrator <Link to={'/register'}>here</Link></p>
+						
+					</Form>
+				</Col>
 			</Row>
 
 		</Container>

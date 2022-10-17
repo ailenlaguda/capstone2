@@ -5,7 +5,9 @@ import  {Container} from "react-bootstrap";
 import './App.css';
 import AppNavbar from './components/AppNavbar';
 import Home from'./pages/Home';
-// import Register from './pages/Register'
+import MyAccount from'./pages/MyAccount';
+import UserSavings from './pages/UserSavings'
+import UserSharedCapital from './pages/SharedCapital'
 // import Login from './pages/Login'
 import Logout from './pages/Logout'
 import PageNotFound from './components/PageNotFound'
@@ -38,7 +40,10 @@ function App() {
               <Route path="/" element={<Home />} />
              {/* <Route path="/contact" element={<Contact />} />
               <Route path='/register' element={<Register />} />*/}
+              <Route path='/userSavings' element={<UserSavings />} />
+              <Route path='/userSharedCapital' element={<UserSharedCapital />} />
               <Route path='/logout' element={<Logout />} />
+              <Route path='/MyAccount' element={<MyAccount />} />
               <Route path='*' element={<PageNotFound />} />
             </Routes>
         </Container>  
