@@ -113,7 +113,7 @@ export default function MyAccount(){
 								Loan Balance: <b>&#8369;{dollarUSLocale.format(totalLoans)}</b>
 								<p>Amount Due: {dollarUSLocale.format(amount)}</p>
 								 Due Date: {dueDate}
-								<p> View transactions <Link to={'/userSavings'}>here.</Link></p>
+								<p> View transactions <Link to={'/userLoan'}>here.</Link></p>
 							</Card.Text>
 						</Card.Body>
 					</Card>
@@ -162,9 +162,9 @@ export default function MyAccount(){
 							</Card.Title>
 							<Card.Text>
 								<p>SOON....</p>
-								Loan Balance: <b>&#8369;{dollarUSLocale.format(totalLoans)}</b>
-								<p>Amount Due: {dollarUSLocale.format(amount)}</p>
-								 Due Date: {dueDate}
+								Loan Balance: <b>&#8369;</b>
+								<p>Amount Due: </p>
+								 Due Date: 
 								{/*<p> View transactions <Link to={'/userSavings'}>here.</Link></p>*/}
 
 							</Card.Text>

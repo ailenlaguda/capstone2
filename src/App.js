@@ -8,6 +8,7 @@ import Home from'./pages/Home';
 import MyAccount from'./pages/MyAccount';
 import UserSavings from './pages/UserSavings'
 import UserSharedCapital from './pages/SharedCapital'
+import UserLoan from './pages/UserLoans'
 // import Login from './pages/Login'
 import Logout from './pages/Logout'
 import PageNotFound from './components/PageNotFound'
@@ -42,6 +43,7 @@ function App() {
               <Route path='/register' element={<Register />} />*/}
               <Route path='/userSavings' element={<UserSavings />} />
               <Route path='/userSharedCapital' element={<UserSharedCapital />} />
+              <Route path='/userLoan' element={<UserLoan />} />
               <Route path='/logout' element={<Logout />} />
               <Route path='/MyAccount' element={<MyAccount />} />
               <Route path='*' element={<PageNotFound />} />
