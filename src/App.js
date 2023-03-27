@@ -7,8 +7,14 @@ import AppNavbar from './components/AppNavbar';
 import Home from'./pages/Home';
 import MyAccount from'./pages/MyAccount';
 import UserSavings from './pages/UserSavings'
-import UserSharedCapital from './pages/SharedCapital'
+import SharedCapitalPage from './pages/SharedCapitalPage'
 import UserLoan from './pages/UserLoans'
+import UserProfiles from './pages/UserProfiles'
+import ChangePasswor from './pages/ChangePassword'
+import LoanCalculator from './pages/LoanCalculator'
+import AdminDashboard from './pages/AdminDashboard'
+import Register from './pages/Register';
+import AddUser from './components/AddUser';
 // import Login from './pages/Login'
 import Logout from './pages/Logout'
 import PageNotFound from './components/PageNotFound'
@@ -39,13 +45,18 @@ function App() {
         <Container>
             <Routes>
               <Route path="/" element={<Home />} />
-             {/* <Route path="/contact" element={<Contact />} />
-              <Route path='/register' element={<Register />} />*/}
+             {/*{ <Route path="/contact" element={<Contact />} />*/}
+              <Route path='/AddUser' element={<AddUser />} />
+              <Route path='/register' element={<Register />} />
               <Route path='/userSavings' element={<UserSavings />} />
-              <Route path='/userSharedCapital' element={<UserSharedCapital />} />
+              <Route path='/userSharedCapital' element={<SharedCapitalPage />} />
+              <Route path='/userProfile' element={<UserProfiles />} />
               <Route path='/userLoan' element={<UserLoan />} />
+              <Route path='/changePassword' element={<ChangePasswor />} />
               <Route path='/logout' element={<Logout />} />
-              <Route path='/MyAccount' element={<MyAccount />} />
+              <Route path='/myAccount' element={<MyAccount />} />
+              <Route path='/loanCalculator' element={<LoanCalculator />} />
+              <Route path='/AdminDashboard' element={<AdminDashboard />} />
               <Route path='*' element={<PageNotFound />} />
             </Routes>
         </Container>  

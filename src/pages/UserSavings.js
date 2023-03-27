@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Table, Row, Container, Col } from 'react-bootstrap';
 
 
@@ -6,15 +6,14 @@ export default function UserSavings() {
 
 	const [savings, setSavings] = useState([])
 	const [savingsData, setSavingsData] =  useState([])
-	const [savingsInterestData, setsavingsInterestData] =  useState([])
 	const [savingsInterests, setsavingsInterest] =  useState([])
-
+	const [currTotalSavings, setCurrTotalSavings] = useState('')
 	
 
 	
 		const fetchData = () => {
 		// fetch('https://laguda-grocery-store-ol-shop.herokuapp.com/orders/all-auth-orders',{
-			fetch(`http://localhost:4000/users/oneRecord/${localStorage.getItem('id')}`,{
+			fetch(`http://localhost:4000/savings/indivdualSavingsRecord/${localStorage.getItem('id')}`,{
 			// fetch(`http://localhost/users/oneRecord/${user._id}`,{
 				method: 'GET',
 					headers: {
@@ -25,15 +24,22 @@ export default function UserSavings() {
 			})
 			.then(res=> res.json())
 			.then (data => {
+
+				setSavings(data)
+
+				if ( savings.length > 0) {
+				    const lastTotalSavings = savings[0];
+				    setCurrTotalSavings(lastTotalSavings.currTotalSavings );
+				}
 				
-				setSavings(data.savings)
-				setsavingsInterestData(data.savingsInterests)	
-				
+
 				const savingsArr = savings.map(saving => {
 					return (
 						<tr key={saving._id}>
-							<td>{saving.date}</td>
-							<td>{saving.amount}</td>
+							<td>{formatDate(saving.date)}</td>
+							<td>{`₱${dollarUSLocale.format(saving.amount)}`}</td>
+							<td>{saving.description}</td>
+							<td>{saving.transType}</td>
 						</tr>
 					)
 					})
@@ -41,16 +47,7 @@ export default function UserSavings() {
 				setSavingsData(savingsArr)	
 
 
-				const savingsInterestArr = savingsInterestData.map(savingInt => {
-					return (
-						<tr key={savingInt._id}>
-							<td>{savingInt.date}</td>
-							<td>{savingInt.amount}</td>
-						</tr>
-					)
-					})
-
-				setsavingsInterest(savingsInterestArr)	
+				
 			})
 
 		}
@@ -59,20 +56,36 @@ export default function UserSavings() {
 		fetchData();
 	}, [fetchData])
 
+	function formatDate(isoDate) {
+	  const dateObj = new Date(isoDate);
+	  const year = dateObj.getFullYear();
+	  const month = (dateObj.getMonth() + 1).toString().padStart(2, '0'); // add 1 to month since it's zero-based, and pad with zero if necessary
+	  const day = dateObj.getDate().toString().padStart(2, '0'); // pad with zero if necessary
+	  const formattedDate = `${year}-${month}-${day}`;
+	  return formattedDate;
+	}
+
+  	let dollarUSLocale = Intl.NumberFormat('en-US');
+
 
 	return(
 		<>
 		<Container>
 			<Row>
-				<Col xs={12} md={6}>
+				<Col xs={12} md={12}>
 					<div className="text-center my-4">
 						<h1> Savings Transactions</h1>
+					</div>
+					<div>
+						<h3>Current Balance: {`₱${dollarUSLocale.format(currTotalSavings)}`}</h3>
 					</div>
 					<Table striped bordered hover responsive>
 						<thead className="bg-dark text-white">
 							<tr>
 								<th>Date</th>
 								<th>Amount</th>
+								<th>Description</th>
+								<th>Transaction Type</th>
 								{/*<th>Description</th>
 								<th>Price</th>
 								<th>Availability</th>
@@ -85,32 +98,8 @@ export default function UserSavings() {
 						</tbody>
 					</Table>
 				</Col>
-				<Col xs={12} md={6}>
-					<div className="text-center my-4">
-						<h1> Savings Interests</h1>
-						{/*<AddCourse fetchData={fetchData}/>*/}
-					</div>
-					<Table striped bordered hover responsive>
-						<thead className="bg-dark text-white">
-					<tr>
-						<th>Date</th>
-						<th>Amount</th>
-						{/*<th>Description</th>
-						<th>Price</th>
-						<th>Availability</th>
-						<th colSpan='2'>Actions</th>*/}
-					</tr>
-						</thead>
-
-						<tbody>
-							{savingsInterests}
-						</tbody>
-					</Table>
-				</Col>
 			</Row>
-		</Container>
-
-			
+		</Container>	
 			
 		</>
 

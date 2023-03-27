@@ -12,7 +12,7 @@ export default function UserLoan() {
 	
 		const fetchData = () => {
 		// fetch('https://laguda-grocery-store-ol-shop.herokuapp.com/orders/all-auth-orders',{
-			fetch(`http://localhost:4000/loans/loansrecord/${localStorage.getItem('email')}`,{
+			fetch(`http://localhost:4000/loans/retrieveAllRecord/${localStorage.getItem('email')}`,{
 			// fetch(`http://localhost/users/oneRecord/${user._id}`,{
 				method: 'GET',
 					headers: {
@@ -23,7 +23,7 @@ export default function UserLoan() {
 			})
 			.then(res=> res.json())
 			.then (data => {
-				
+				console.log(data)
 				setLoans(data)
 					
 				const savingsArr = loans.map(saving => {
@@ -43,7 +43,6 @@ export default function UserLoan() {
 				})
 
 				setLoanData(savingsArr)	
-	
 			})
 
 		}
@@ -51,21 +50,23 @@ export default function UserLoan() {
 	const [showEdit, setShowEdit] = useState(false)
 
 	const openEdit = (loanId) => {
-		console.log(loanId)
+	
 		//to still get the actual data from the form
 		// fetch(`https://mysterious-taiga-31794.herokuapp.com/courses/${ courseId }`)
 		fetch(`http://localhost:4000/loans/loansrecord/${loanId}`)
 		.then(res => res.json())
 		.then(data => {
 			//populate all the input values with course info that we fetched
-			console.log(data)
-			setLoanPayment(data)
+			// console.log(data)
+			setLoanPayment(data.paymentsSchedules)
+			console.log(data.paymentsSchedules)
 			
 			const savingsInterestArr = loanPayment.map(savingInt => {
 			return (
 				<tr key={savingInt._id}>
 					<td>{savingInt.date}</td>
 					<td>{savingInt.amount}</td>
+					<td>{savingInt.isActive ? "Paid": "Not yet Paid"}</td>
 					
 				</tr>
 			)
@@ -128,7 +129,7 @@ export default function UserLoan() {
 							<Table striped bordered hover responsive>
 								<thead className="bg-dark text-white">
 							<tr>
-								<th colSpan='2'>Date</th>
+								<th>Date</th>
 								<th>Amount</th>
 								<th>Payment Status</th>
 								{/*<th>Description</th>

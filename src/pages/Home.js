@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext, useRef} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import	{Form, Container, Row, Col, Button} from "react-bootstrap";
 import Swal from 'sweetalert2';
 import UserContext from '../UserContext';
@@ -9,9 +9,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye,faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import Banner from '../components/Banner';
 
+
 export default function Home(){
-	const [passwordShown, setPasswordShown] = useState(false);
-	const[password,setPassword]=useState("password");
+	const[passwordShown, setPasswordShown] = useState(false);
+	const[password,setPassword]=useState("");
 
 	const {user, setUser} = useContext(UserContext);
 	const navigate = useNavigate();
@@ -54,9 +55,7 @@ export default function Home(){
 		})
 		.then(response => response.json())
 		.then(data => {
-			
-			console.log(data.email)
-
+			console.log(data.activeStatus)
 			if (data.message === "Incorrect Password"){
 
 				Swal.fire({
@@ -75,10 +74,19 @@ export default function Home(){
 
 				navigate('/')
 
-			} else{
+			} else if(data.message === "Member pending approval"){
+				
+				Swal.fire({
+				  title: 'Error',
+				  text: `Your registration is still for approval`,
+				  icon:'error'
+				})
+
+				navigate('/')
+			} else {
 				
 				localStorage.setItem('accessToken', data.accessToken);					
-				localStorage.setItem('userType', data.userType);					
+				localStorage.setItem('memberType', data.memberType);					
 				localStorage.setItem('id', data.id);					
 				localStorage.setItem('email', data.email);
 				
@@ -104,8 +112,6 @@ export default function Home(){
 
 				
 		})	
-
-		// 	e.preventDefault();
 		
 	}
 	
@@ -140,18 +146,21 @@ export default function Home(){
 								onChange={e => setEmail(e.target.value)}
 							/>									 
 						</Form.Group>
-						<Form.Group className = "mt-3">								
-							<Form.Control 
-								type={passwordShown? "text" :"password" }
-								placeholder = "password"
-								required
-								value={password}
-								onChange={e => setPassword(e.target.value)}
-							/>
-							<span><FontAwesomeIcon 
-									onClick={togglePassword}
-									icon={!passwordShown ? faEyeSlash : faEye} 
-								/> Show/Hide Password</span>
+						<Form.Group className="mt-3">								
+						  <Form.Control 
+						    type={passwordShown ? "text" : "password"}
+						    placeholder={"password"}
+						    required
+						    value={password}
+						    onChange={e => setPassword(e.target.value)}
+						    aria-label=""
+						  />
+						  <span>
+						    <FontAwesomeIcon 
+						      onClick={togglePassword}
+						      icon={!passwordShown ? faEyeSlash : faEye} 
+						    /> Show/Hide Password
+						  </span>
 						</Form.Group>						
 						{isActive ?
 								<Row className="mt-3 p-3">
@@ -164,7 +173,7 @@ export default function Home(){
 									<Button className="mt-1" variant="secondary" onClick={()=>routeChange()}> Cancel </Button>
 								</Row>
 							}
-						<p className="text-center"> Not yet a user? Contact the administrator <Link to={'/register'}>here</Link></p>
+						<p className="text-center"> Not yet a user? Register Here <Link to={'/register'}>here</Link></p>
 						
 					</Form>
 				</Col>

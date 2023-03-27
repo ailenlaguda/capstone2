@@ -19,42 +19,25 @@ export default function AppNavbar(){
 					<Nav className="ms-auto">
 
 						{ (user.accessToken !== null) ?
-							<>	
-								{
-									(localStorage.getItem('userType', user.userType) === "member") ?
-										<>
-											{/*<Nav.Link as={ Link } to='/'>Home</Nav.Link>*/}
-											<Nav.Link as={ Link } to='/myAccount'>My Account</Nav.Link>
-											<Nav.Link as={ Link } to='/applyLoan'>Apply Loan</Nav.Link>			
-											<Nav.Link as={ Link } to='/logout'>Logout</Nav.Link>
-										</>
-									:
-
-										(localStorage.getItem('userType', user.userType) === "Chairperson")?
-											<>
-												{/*<Nav.Link as={ Link } to='/'>Home</Nav.Link>*/}
-												<Nav.Link as={ Link } to='/myAccount'>My Account</Nav.Link>
-												<Nav.Link as={ Link } to='/loanApproval'>Loan Approval</Nav.Link>
-												<Nav.Link as={ Link } to='/applyLoan'>Apply Loan</Nav.Link>			
-												<Nav.Link as={ Link } to='/logout'>Logout</Nav.Link>
-
-											</>
-										:
-											<>
-												{/*<Nav.Link as={ Link } to='/'>Home</Nav.Link>*/}
-												<Nav.Link as={ Link } to='/myAccount'>MyAccount</Nav.Link>
-												<Nav.Link as={ Link } to='/reports'>Reports</Nav.Link>
-												<Nav.Link as={ Link } to='/addTransaction'>Transactions</Nav.Link>
-												<Nav.Link as={ Link } to='/applyLoan'>Apply Loan</Nav.Link>			
-												<Nav.Link as={ Link } to='/logout'>Logout</Nav.Link>
-											</>
-								}
-							</>
+							(localStorage.getItem('memberType', user.memberType) === "Member" ) ?
+								<>
+									{/*<Nav.Link as={ Link } to='/'>Home</Nav.Link>*/}
+									<Nav.Link as={ Link } to='/myAccount'>My Account</Nav.Link>
+									<Nav.Link as={ Link } to='/LoanCalculator'>Apply Loan</Nav.Link>	
+									<Nav.Link as={ Link } to='/logout'>Logout</Nav.Link>
+								</>
 							:
-							<>
-								<Nav.Link as={ Link } to='/'>Home</Nav.Link>
-								<Nav.Link as={ Link } to='/login'>Login</Nav.Link>
-							</>
+								<>
+									{/*<Nav.Link as={ Link } to='/'>Home</Nav.Link>*/}
+									<Nav.Link as={ Link } to='/myAccount'>My Account</Nav.Link>
+									<Nav.Link as={ Link } to='/LoanCalculator'>Apply Loan</Nav.Link>
+									<Nav.Link as={ Link } to='/AdminDashboard'>Admin Dashboard</Nav.Link>
+									<Nav.Link as={ Link } to='/logout'>Logout</Nav.Link>
+
+								</>
+						:
+							<Nav.Link as={ Link } to='/'>Home</Nav.Link>
+								
 						}
 
 					</Nav>

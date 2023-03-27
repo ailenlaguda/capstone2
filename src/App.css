@@ -16,6 +16,10 @@
   font-family: 'Lobster', cursive;
 }
 
+.bg-purple {
+  background-color: purple;
+}
+
 .jumbotron {
   background-image: url("images/bg-transparent.png") ;
   background-size: cover;
@@ -139,3 +143,4 @@
       overflow: hidden;
       max-height: 100vh;
     }
+

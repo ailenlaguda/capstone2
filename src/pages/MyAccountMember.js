@@ -3,8 +3,7 @@ import	{Row, Col, Card, Container} from "react-bootstrap";
 import Banner from '../components/Banner'
 import {Link} from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMoneyBillAlt,faMoneyBillWaveAlt, faHandHoldingUsd, faFileContract, faUserCircle  } from '@fortawesome/free-solid-svg-icons';
-import {Navigate, useNavigate} from 'react-router-dom';
+import { faMoneyBillAlt,faMoneyBillWaveAlt, faHandHoldingUsd, faFileContract, faUserCircle,faUserEdit  } from '@fortawesome/free-solid-svg-icons';
 // import UserLoans from from '../components/UserLoans';
 // import UserSavings from '../components/UserSavings'
 // import UserProfiles from from '../components/UserProfiles';
@@ -17,18 +16,13 @@ export default function MyAccount(){
 	// const [allProductsMenu, setProductsMenu] = useState([]);
 	const [usersData, setUserData] = useState([]);
 	const [totalSavings, setTotalSavings] = useState([]);
-	const [currTotalSavings, setCurrTotalSavings] = useState('')
-	const [currTotalSharedCapital, setcurrTotalSharedCapital] = useState('')
+	const [totalLoans, setTotalLoans] = useState([]);
 	const [dueDate, setDueDate] = useState(new Date());
 	const [amount, setAmount] = useState('');
 	const [firstName, setFirstName] = useState('');
-	const [middleName, setMiddleName] = useState('');
 	const [lastName, setLastName] = useState('');
 	const [position, setPosition] = useState('');
 	const [sharedCapital, setSharedCapital] = useState('');
-	const [totalLoans, setTotalLoans] = useState('');
-	const [savingAll, setSavingsAll] = useState('');
-	const [sharedCapitalAll, setSharedCapitalAll] = useState('');
 	
 
 	const fetchDataOrder = () => {
@@ -49,7 +43,6 @@ export default function MyAccount(){
 			setTotalSavings(Number.parseFloat(data.totalSavings).toFixed(2))
 			setFirstName(data.firstName)
 			setLastName(data.lastName)
-			setMiddleName(data.middleName)
 			setPosition(data.position)
 			setSharedCapital(data.totalSharedCapital)
 		})
@@ -83,49 +76,6 @@ export default function MyAccount(){
 		})
 	}
 
-	
-// savings fetching current balance
-	fetch(`http://localhost:4000/savings/indivdualSavingsRecord/${localStorage.getItem('id')}`,{
-	// fetch(`http://localhost/users/oneRecord/${user._id}`,{
-		method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-				 'Accept': 'application/json'
-			}
-	})
-	.then(res=> res.json())
-	.then (data => {
-
-		setSavingsAll(data)
-
-		if ( savingAll.length > 0) {
-		    const lastTotalSavings = savingAll[savingAll.length - 1];
-		    setCurrTotalSavings(lastTotalSavings.currTotalSavings );
-		}
-	})
-	
-	// savings fetching current shared capital totals
-	fetch(`http://localhost:4000/sharedCapitals/indivdualSavingsRecord/${localStorage.getItem('id')}`,{
-	// fetch(`http://localhost/users/oneRecord/${user._id}`,{
-		method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-				 'Accept': 'application/json'
-			}
-	})
-	.then(res=> res.json())
-	.then (data => {
-
-		setSharedCapitalAll(data)
-
-		if (sharedCapitalAll.length > 0) {
-		    const lastTotalSavings = sharedCapitalAll[sharedCapitalAll.length - 1];
-		    setcurrTotalSharedCapital(lastTotalSavings.currTotalSharedCapital);
-		}
-	})
-
 	const formattedDate = dueDate.toLocaleDateString(undefined, {
 	    year: "numeric",
 	    month: "long",
@@ -142,11 +92,6 @@ export default function MyAccount(){
 
 
 	return (
-		(user.accessToken === null) ?
-					
-			<Navigate to="/" />
-		:
-
 		<Container>
 			<Row><Banner/></Row>
 			<Row>
@@ -157,7 +102,7 @@ export default function MyAccount(){
 								<h2>Savings <FontAwesomeIcon icon={faMoneyBillAlt} /></h2>
 							</Card.Title>
 							<Card.Text>
-								Total Savings: Your total savings is <b>&#8369;{dollarUSLocale.format(currTotalSavings)}</b>
+								Total Savings: Your total savings is <b>&#8369;{dollarUSLocale.format(totalSavings)}</b>
 								<br/>
 								<br/>
 								<br/>
@@ -175,7 +120,7 @@ export default function MyAccount(){
 								<h2>Shared Capital <FontAwesomeIcon icon={faHandHoldingUsd} /><i class="fas fa-hand-holding-usd"></i></h2>
 							</Card.Title>
 							<Card.Text>
-								Total Shared Capital: <b>&#8369;{dollarUSLocale.format(currTotalSharedCapital)}</b>
+								Total Shared Capital: <b>&#8369;{dollarUSLocale.format(sharedCapital)}</b>
 								<br />
 								<br/>
 								<br/>
@@ -194,7 +139,7 @@ export default function MyAccount(){
 							<Card.Text>
 								Loan Balance: <b>&#8369;{dollarUSLocale.format(totalLoans)}</b>
 								<br />Monthly Amortization: <b>&#8369;{dollarUSLocale.format(amount)}</b>
-								 <br/>Upcoming Due Date: {amount===0 ? <b>{formattedDate}</b>: "No Loan Record"}
+								 <br/>Upcoming Due Date: <b>{formattedDate}</b>
 								<br /> View transactions <b><Link to={'/userLoan'}>here.</Link></b>
 								<br />Apply for a new loan<b> <Link to={'/LoanCalculator'}>here.</Link></b>
 							</Card.Text>
@@ -227,7 +172,7 @@ export default function MyAccount(){
 								<h2>My Profile <FontAwesomeIcon icon={faUserCircle} /></h2>
 							</Card.Title>
 							<Card.Text>
-								Full Name: <b> {lastName}, {firstName} {middleName}</b>
+								Full Name: <b> {lastName}, {firstName}</b>
 								<p>Postion: <b>{position}</b>
 								<br /> Edit your profile <b><Link to={'/userProfile'}>here.</Link></b></p>
 
