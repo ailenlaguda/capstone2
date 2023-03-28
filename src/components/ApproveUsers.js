@@ -95,8 +95,8 @@ export default function ApproveUsers() {
 			    	
 			    	// console.log(data)
 			    	Swal.fire({
-		               title: 'Loan Application Approve',
-		               text: 'The loan application has been approved.',
+		               title: 'Member Registration Approve',
+		               text: ' The Member has been approved.',
 		               icon:'success'
 		             })
 		             setShowEdit(false)

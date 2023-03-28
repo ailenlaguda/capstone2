@@ -1,14 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Row, Container, Col } from 'react-bootstrap';
+import { Table, Row, Container, Col, Button } from 'react-bootstrap';
 
+import { useNavigate } from "react-router-dom";
+import { faPrint } from '@fortawesome/free-solid-svg-icons';
+  
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default function SharedCapitalPage() {
-
+  const print = () => {
+        window.print()
+    }
+  const navigate = useNavigate();
   const [savings, setSavings] = useState([])
   const [savingsData, setSavingsData] =  useState([])
   const [savingsInterests, setsavingsInterest] =  useState([])
   const [currTotalSavings, setCurrTotalSavings] = useState('')
-  
+  const navToDashboard = () =>{
+    navigate("/myAccount")
+  }
 
   
     const fetchData = () => {
@@ -100,6 +109,8 @@ export default function SharedCapitalPage() {
           </Table>
         </Col>
       </Row>
+        <Button title="Print Transactions" onClick={() => print()}><FontAwesomeIcon icon={faPrint} /></Button>
+        <Button  className = "my-3 mx-1" variant="secondary" onClick={()=>navToDashboard()} >Back to Account.</Button>
     </Container>  
       
     </>

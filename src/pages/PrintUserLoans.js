@@ -5,8 +5,8 @@ import { faPrint } from '@fortawesome/free-solid-svg-icons';
   
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export default function UserLoan() {
-	console.log("YADIS")
+export default function PrintUserLoans() {
+	
 	const print = () => {
         window.print()
     }
@@ -17,7 +17,7 @@ export default function UserLoan() {
 	const [loanPaymentData, setLoanPaymentData] =  useState([])
 	
 	const navToDashboard = () =>{
-    	navigate("/myAccount")
+    	navigate("/AdminDashboard")
   	}
 
 	function formatDate(isoDate) {
@@ -34,7 +34,7 @@ export default function UserLoan() {
 	
 		const fetchData = () => {
 		// fetch('https://laguda-grocery-store-ol-shop.herokuapp.com/orders/all-auth-orders',{
-			fetch(`http://localhost:4000/loans/retrieveLoanAllLoan/${localStorage.getItem('id')}`,{
+			fetch(`http://localhost:4000/loans/retrieveLoanAllLoan/${localStorage.getItem('printId')}`,{
 			// fetch(`http://localhost/users/oneRecord/${user._id}`,{
 				method: 'GET',
 					headers: {
@@ -45,11 +45,8 @@ export default function UserLoan() {
 			})
 			.then(res=> res.json())
 			.then (data => {
-
 				setLoans(data)
-				console.log(data)
-				
-
+					
 				const savingsArr = loans.map(saving => {
 					return (
 						<tr key={saving._id}>
@@ -66,6 +63,7 @@ export default function UserLoan() {
 				})
 
 				setLoanData(savingsArr)	
+			console.log(savingsArr)
 			})
 
 		}
@@ -140,7 +138,7 @@ export default function UserLoan() {
 				</Col>
 			</Row>
 			<Button title="Print Transactions" onClick={() => print()}><FontAwesomeIcon icon={faPrint} /></Button>
-       	 	<Button  className = "my-3 mx-1" variant="secondary" onClick={()=>navToDashboard()} >Back to Account.</Button>
+       	 	<Button  className = "my-3 mx-1" variant="secondary" onClick={()=>navToDashboard()} >Back to Dashboard.</Button>
 		</Container>
 				{/*Edit Modal Forms*/}
 				<Modal show={showEdit} onHide={closeEdit}>
@@ -169,6 +167,7 @@ export default function UserLoan() {
 						</Modal.Body>
 
 						<Modal.Footer>
+							<Button title="Print Transactions" onClick={() => print()}><FontAwesomeIcon icon={faPrint} /></Button>
 							<Button variant="secondary" onClick={closeEdit}>Close</Button>
 						</Modal.Footer>
 				</Modal>

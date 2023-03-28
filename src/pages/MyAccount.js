@@ -59,7 +59,7 @@ export default function MyAccount(){
 	
 
 	const loans = () => {
-		fetch(`http://localhost:4000/loans/loanRecord/${localStorage.getItem('email')}`,{
+		fetch(`http://localhost:4000/loans/loanRecord/${localStorage.getItem('id')}`,{
 		// fetch(`http://localhost/users/oneRecord/${user._id}`,{
 			method: 'GET',
 				headers: {
@@ -72,11 +72,11 @@ export default function MyAccount(){
 		.then (result => {
 			
 			setUserData(result)
-			setTotalLoans(Number.parseFloat(result.outBalance).toFixed(2))
+			setTotalLoans(Number.parseFloat(result.currLoanBalance).toFixed(2))
 			// dueDate=result.paymentsSchedules[0].date
 			// setDueDate(result.paymentsSchedules[0].date)
-			setAmount(result.paymentsSchedules[0].amount)
-			setDueDate(result.paymentsSchedules[0].date)
+			setAmount(result.paymentSchedules[0].amount)
+			setDueDate(result.paymentSchedules[0].date)
 
 
 			
@@ -126,12 +126,14 @@ export default function MyAccount(){
 		}
 	})
 
-	const formattedDate = dueDate.toLocaleDateString(undefined, {
-	    year: "numeric",
-	    month: "long",
-	    day: "numeric"
-	 });
-
+	function formatDate(isoDate) {
+	  const dateObj = new Date(isoDate);
+	  const year = dateObj.getFullYear();
+	  const month = (dateObj.getMonth() + 1).toString().padStart(2, '0'); // add 1 to month since it's zero-based, and pad with zero if necessary
+	  const day = dateObj.getDate().toString().padStart(2, '0'); // pad with zero if necessary
+	  const formattedDate = `${year}-${month}-${day}`;
+	  return formattedDate;
+	}
 	let dollarUSLocale = Intl.NumberFormat('en-US');
 	// let dateLocale = new Intl.DateTimeFormat('en-US' /*, o*/)
 
@@ -172,7 +174,7 @@ export default function MyAccount(){
 					<Card className="card-highlight p-3 mt-3">
 						<Card.Body>
 							<Card.Title>
-								<h2>Shared Capital <FontAwesomeIcon icon={faHandHoldingUsd} /><i class="fas fa-hand-holding-usd"></i></h2>
+								<h2>Shared Capital <FontAwesomeIcon icon={faHandHoldingUsd} /><i className="fas fa-hand-holding-usd"></i></h2>
 							</Card.Title>
 							<Card.Text>
 								Total Shared Capital: <b>&#8369;{dollarUSLocale.format(currTotalSharedCapital)}</b>
@@ -192,9 +194,9 @@ export default function MyAccount(){
 								<h2>Active Loan <FontAwesomeIcon icon={faMoneyBillWaveAlt} /></h2>
 							</Card.Title>
 							<Card.Text>
-								Loan Balance: <b>&#8369;{dollarUSLocale.format(totalLoans)}</b>
+								Loan Balance:  <b>&#8369;{isNaN(totalLoans)? "No Active Loan":dollarUSLocale.format(totalLoans)}</b>
 								<br />Monthly Amortization: <b>&#8369;{dollarUSLocale.format(amount)}</b>
-								 <br/>Upcoming Due Date: {amount===0 ? <b>{formattedDate}</b>: "No Loan Record"}
+								 <br/>Upcoming Due Date: {amount===0 ? <b>{formatDate(dueDate)}</b>: "No Loan Record"}
 								<br /> View transactions <b><Link to={'/userLoan'}>here.</Link></b>
 								<br />Apply for a new loan<b> <Link to={'/LoanCalculator'}>here.</Link></b>
 							</Card.Text>

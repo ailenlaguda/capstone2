@@ -15,6 +15,10 @@ import LoanCalculator from './pages/LoanCalculator'
 import AdminDashboard from './pages/AdminDashboard'
 import Register from './pages/Register';
 import AddUser from './components/AddUser';
+import PrintSavings from './pages/PrintSavings';
+import PrintSharedCapital from './pages/PrintSharedCapital';
+import PrintUserLoans from './pages/PrintUserLoans';
+
 // import Login from './pages/Login'
 import Logout from './pages/Logout'
 import PageNotFound from './components/PageNotFound'
@@ -57,6 +61,9 @@ function App() {
               <Route path='/myAccount' element={<MyAccount />} />
               <Route path='/loanCalculator' element={<LoanCalculator />} />
               <Route path='/AdminDashboard' element={<AdminDashboard />} />
+              <Route path='/PrintSavings' element={<PrintSavings />} />
+              <Route path='/PrintSharedCapital' element={<PrintSharedCapital />} />
+              <Route path='/PrintUserLoans' element={<PrintUserLoans />} />
               <Route path='*' element={<PageNotFound />} />
             </Routes>
         </Container>  

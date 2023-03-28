@@ -1,5 +1,5 @@
 import { Button, Modal, Form, Container, Row, Table, Col } from 'react-bootstrap';
-import React, { useState} from 'react';
+import React, { useState, useEffect} from 'react';
 import Swal from 'sweetalert2';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -46,53 +46,63 @@ export default function LoanSummary({firstName, lastName, loan, fetchData}) {
 	  })
 	    .then(res => res.json())
 	    .then(data => {
+	    	console.log(data)
+	      
+	      if (data.message === "No records found") {
+	      	Swal.fire({
+               title: 'No Active Loan',
+               text: ' The Member has no active loan.',
+               icon:'success'
+             })
+             setShowEdit(false)
+	      } else{
 
-	      if (data) {
-	      // if (data.message === "No records found") {
-	      	setLoanID(data._id);
-            setDate(data.date);
-            setcurrLoanBalance(data.currLoanBalance);
-            setPrincipalAmount(data.principalAmount);
-            setInterest(data.interest);
-            setTerm(data.term);
-            setIsActive(data.isActive);
-            setPaymentSchedules(data.paymentSchedules);
-            setEmployeeNumber(data.employeeNumber);
-            if (data.applicationStatus !== "Pending") {
-            	setPendingStat(false)
-            } else{
-            	setPendingStat(true)
+		      if (data) {
+		      	setLoanID(data._id);
+	            setDate(data.date);
+	            setcurrLoanBalance(data.currLoanBalance);
+	            setPrincipalAmount(data.principalAmount);
+	            setInterest(data.interest);
+	            setTerm(data.term);
+	            setIsActive(data.isActive);
+	            setPaymentSchedules(data.paymentSchedules);
+	            setEmployeeNumber(data.employeeNumber);
+	            if (data.applicationStatus !== "Pending") {
+	            	setPendingStat(false)
+	            } else{
+	            	setPendingStat(true)
 
-            }
+	            }
 
-            if (data.isActive === false && data.applicationStatus === "Pending") {
-			    setPending(
-			        <Form.Group>
-			            <Form.Label>*This loan is pending for approval</Form.Label><br />
-			            <Button 
-			            	style={{ backgroundColor: "#101F60" }} 
-			            	variant="success" 
-			            	onClick={(event)=>approveLoan(event)}>Approve</Button>
-			        </Form.Group>
-			    );
-			}
+	            if (data.isActive === false && data.applicationStatus === "Pending") {
+				    setPending(
+				        <Form.Group>
+				            <Form.Label>*This loan is pending for approval</Form.Label><br />
+				            <Button 
+				            	style={{ backgroundColor: "#101F60" }} 
+				            	variant="success" 
+				            	onClick={(event)=>approveLoan(event)}>Approve</Button>
+				        </Form.Group>
+				    );
+				}
 
-            const paymentSchedules1 = paymentSchedules.map(schedule => (
-	            <tr key={schedule._id}>
-	                <td>{formatDate(schedule.date)}</td>
-	                <td>{dollarUSLocale.format(schedule.amount)}</td>
-	                <td>{(schedule.paidStatus) ? "Paid" : "Not Paid"}</td>
-	                <td>{(schedule.overDueStat) ? `Overdue: ${dollarUSLocale.format(schedule.amount*.01)}` : ``}</td>
-	               <td>
-					  {schedule.paidStatus 
-					    ? `Paid: ${dollarUSLocale.format(schedule.AmountPaid)}` 
-					    : pendingStat ? "For Approval" : <button onClick={(event) => handlePayment(schedule._id, schedule.amount, employeeNumber, schedule.overDueStat,event)}>Pay Due</button> }
-					</td>
-	            </tr>
-		    	));
+	            const paymentSchedules1 = paymentSchedules.map(schedule => (
+		            <tr key={schedule._id}>
+		                <td>{formatDate(schedule.date)}</td>
+		                <td>{dollarUSLocale.format(schedule.amount)}</td>
+		                <td>{(schedule.paidStatus) ? "Paid" : "Not Paid"}</td>
+		                <td>{(schedule.overDueStat) ? `Overdue: ${dollarUSLocale.format(schedule.amount*.01)}` : ``}</td>
+		               <td>
+						  {schedule.paidStatus 
+						    ? `Paid: ${dollarUSLocale.format(schedule.AmountPaid)}` 
+						    : pendingStat ? "For Approval" : <button onClick={(event) => handlePayment(schedule._id, schedule.amount, employeeNumber, schedule.overDueStat,event)}>Pay Due</button> }
+						</td>
+		            </tr>
+			    	));
 
-		    setPaymentSchedules2(paymentSchedules1)
-	      } 
+			    setPaymentSchedules2(paymentSchedules1)
+		      } 
+	      }
 
 	    })
 	    .catch(err => {
@@ -179,23 +189,30 @@ export default function LoanSummary({firstName, lastName, loan, fetchData}) {
 			 		})
 		       	.then(res => res.json())
 			    	.then(data => {
-			    		console.log(data)
-				    	if (data.message !==undefined) {
+				    	
+				    	if (data.message === "Loan is fully paid") {
 
 					    	Swal.fire({
 				               title: 'Good job!',
-				               text: 'Payment Confirmed.',
+				               text: 'Payment Confirmed. Loan fully paid',
 				               icon:'success'
 				             })
 					    setShowEdit(false);
-				    	} else {
+				    	} else if(data.message === "Loan payment confirm") {
 						    Swal.fire({
+					               title: 'Good Job',
+					               text: 'Loan payment confirmed.',
+					               icon:'success'
+					             })
+						    setShowEdit(false);
+
+				    	}else{
+				    		Swal.fire({
 					               title: 'Error',
 					               text: 'Please contact IT Admin.',
 					               icon:'error'
 					             })
 						    setShowEdit(false);
-
 				    	}
 			    })
 		    } else {
@@ -263,6 +280,7 @@ export default function LoanSummary({firstName, lastName, loan, fetchData}) {
 	  const formattedDate = `${year}-${month}-${day}`;
 	  return formattedDate;
 	}
+
 
   	let dollarUSLocale = Intl.NumberFormat('en-US');
 

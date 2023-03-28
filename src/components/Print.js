@@ -3,8 +3,31 @@ import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPrint } from '@fortawesome/free-solid-svg-icons';
+import PrintSharedCapital from '../pages/PrintSharedCapital';
+import PrintSavings from '../pages/PrintSavings';
+import { useNavigate } from 'react-router-dom';
 
-export default function Print({ id }) {
+
+export default function Print({}) {
+  
+  const navigate = useNavigate();
+
+  const handleButtonClick = (userID) => {
+    localStorage.setItem('printId', userID)
+    navigate('/PrintSavings');
+
+    // navigate('/PrintSavings', { state: { userID: userID } });
+  };
+
+  const handleButtonClick1 = (userID) => {
+     localStorage.setItem('printId', userID)
+    navigate('/PrintSharedCapital');
+  };
+  
+  const handleButtonClick2 = (userID) => {
+     localStorage.setItem('printId', userID)
+    navigate('/PrintUserLoans');
+  };
   
   const [usersData, setUsersData]=useState([]); 
   const [userToPrint, setUserToPrint]=useState(''); 
@@ -38,15 +61,18 @@ export default function Print({ id }) {
                 <td>{user._id}</td>
                 <td>{user.lastName}, {user.firstName} {user.middleName} </td>                   
                <td>
-                   <button>Savings</button> 
+                   {/*<Button onClick={handleButtonClick}>Savings</Button>*/}
+                   <Button onClick={() => handleButtonClick(user._id)}>Savings</Button>
                    {/*<button onClick={(event) => handlePayment(user)}>Pay Due</button> */}
               </td>
               <td>
-                  <button>Loan</button> 
+                 
+                   <Button onClick={() => handleButtonClick1(user._id)}>CBU</Button>
                 
               </td>
               <td>
-                  <button>Log</button> 
+                   <Button onClick={() => handleButtonClick2(user._id)}>Loan</Button>
+                
               </td>
             </tr>
           ));

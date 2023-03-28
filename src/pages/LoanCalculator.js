@@ -2,10 +2,19 @@ import React, { useState } from 'react';
 import {Row, Form, Col, Button, Container} from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCoffee, faCheckCircle, faCalculator  } from '@fortawesome/free-solid-svg-icons';
+import { faCoffee, faCheckCircle, faCalculator, faPrint  } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from "react-router-dom";
 
 export default function LoanCalculator() {
+    const print = () => {
+        window.print()
+    }
 
+    const navToDashboard = () =>{
+      navigate("/myAccount")
+    }
+  const navigate = useNavigate();
+    const [totalBalanceComputed,setTotalBalanceComputed]=useState('')
     const [loanAmount, setLoanAmount] = useState(0);
        const [interestRate, setInterestRate] = useState(0);
        const [loanTerm, setLoanTerm] = useState(0);
@@ -167,14 +176,13 @@ export default function LoanCalculator() {
 
                   paymentSchedules.shift()
                   // e.preventDefault();
-
-
+                 
                  fetch('http://localhost:4000/loans/newLoan', {
                      method: 'POST',
                      headers: { 'Content-Type': 'application/json' },
                      body: JSON.stringify({
                        _id: localStorage.getItem('id'),
-                       outBalance: userValues.amount,
+                       outBalance: (parseFloat(userValues.amount)+parseFloat(userValues.amount*.03)),
                        principalAmount: userValues.amount,
                        interest: userValues.years,
                        term: userValues.years,
@@ -185,7 +193,7 @@ export default function LoanCalculator() {
                    })  
                    .then(response => response.json())
                    .then(data => { 
-                    // console.log(data)  
+                    console.log(data)  
                      Swal.fire({
                        title: 'Good job!',
                        text: 'Loan Applied. Please wait for the confirmation!',
@@ -324,6 +332,8 @@ export default function LoanCalculator() {
                    />
                 </Form.Group>
 
+                <Button title="Print Transactions" onClick={() => print()}><FontAwesomeIcon icon={faPrint} /></Button>
+                <Button  className = "my-3 mx-1" variant="secondary" onClick={()=>navToDashboard()} >Back to Account.</Button>
             </Form>       
           </Col>
       </Row>
