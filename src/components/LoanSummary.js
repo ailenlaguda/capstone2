@@ -1,5 +1,5 @@
 import { Button, Modal, Form, Container, Row, Table, Col } from 'react-bootstrap';
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Swal from 'sweetalert2';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -13,7 +13,6 @@ export default function LoanSummary({firstName, lastName, loan, fetchData}) {
 	const [interest, setInterest] = useState('');
 	const [term, setTerm] = useState('');
 	const [paymentSchedules, setPaymentSchedules] = useState([]);
-	const [paymentSchedules2, setPaymentSchedules2] = useState([]);
 	const [pending, setPending] = useState([]);
 	const [pendingStat, setPendingStat] = useState([true]);
 	const [loanID, setLoanID] = useState([true]);
@@ -23,8 +22,9 @@ export default function LoanSummary({firstName, lastName, loan, fetchData}) {
 	const [showEdit, setShowEdit] = useState(false)
 
 	//function for opening the modal
+	const [paymentSchedules2, setPaymentSchedules2] = useState([]);
+	
 	const openEdit = (loanId) => {
-		setShowEdit(true)
 		fetch(`https://bnhscoopbackend.herokuapp.com/loans/loanRecord/${loanId}`, {
 	    method: 'GET',
 	    headers: {
@@ -74,77 +74,37 @@ export default function LoanSummary({firstName, lastName, loan, fetchData}) {
 				    );
 				}
 
-	            const paymentSchedules1 = paymentSchedules.map(schedule => (
-		            <tr key={schedule._id}>
-		                <td>{formatDate(schedule.date)}</td>
-		                <td>{dollarUSLocale.format(schedule.amount)}</td>
-		                <td>{(schedule.paidStatus) ? "Paid" : "Not Paid"}</td>
-		                <td>{(schedule.overDueStat) ? `Overdue: ${dollarUSLocale.format(schedule.amount*.01)}` : ``}</td>
-		               <td>
-						  {schedule.paidStatus 
-						    ? `Paid: ${dollarUSLocale.format(schedule.AmountPaid)}` 
-						    : pendingStat ? "For Approval" : <button onClick={(event) => handlePayment(schedule._id, schedule.amount, employeeNumber, schedule.overDueStat,event)}>Pay Due</button> }
-						</td>
-		            </tr>
-			    	));
+	     //        const paymentSchedules1 = paymentSchedules.map(schedule => (
+		    //         <tr key={schedule._id}>
+		    //             <td>{formatDate(schedule.date)}</td>
+		    //             <td>{dollarUSLocale.format(schedule.amount)}</td>
+		    //             <td>{(schedule.paidStatus) ? "Paid" : "Not Paid"}</td>
+		    //             <td>{(schedule.overDueStat) ? `Overdue: ${dollarUSLocale.format(schedule.amount*.01)}` : ``}</td>
+		    //            <td>
+						//   {schedule.paidStatus 
+						//     ? `Paid: ${dollarUSLocale.format(schedule.AmountPaid)}` 
+						//     : pendingStat ? "For Approval" : <button onClick={(event) => handlePayment(schedule._id, schedule.amount, employeeNumber, schedule.overDueStat,event)}>Pay Due</button> }
+						// </td>
+		    //         </tr>
+			   //  	));
 
-			    setPaymentSchedules2(paymentSchedules1)
+			   //  setPaymentSchedules2(paymentSchedules1)
 		      } 
+			    setShowEdit(true)
 	      }
-
 	    })
 	    .catch(err => {
 	      console.error('Error fetching data:', err);
 	    });
+
 	}
+	let dollarUSLocale = Intl.NumberFormat('en-US');
+	
+	const handlePayment = useCallback((id, amount, employeeNumber, overDueStat, e) => {
 
-	const closeEdit = () => {
-		setShowEdit(false);
-	}
- 
-   const approveLoan = (event) =>{  	
-    	event.preventDefault();
-    	Swal.fire({
-		    title: `Confirm loan approval`,
-		    text: `Are you sure you want to confirm this loan?`,
-		    icon: 'warning',
-		    showCancelButton: true,
-		    confirmButtonText: 'Yes, confirm',
-		    cancelButtonText: 'Cancel',
-		    reverseButtons: true
-		  }).then((result) => {
-		    
-		    if (result.isConfirmed) {
-		      
-	       		fetch(`https://bnhscoopbackend.herokuapp.com/loans/approveLoan/${loanID}`, 
-		       	{
-				    method: 'PUT',
-				    headers: {
-				      'Content-Type': 'application/json',
-				      Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-				      'Accept': 'application/json'
-				    }
-			 	})
-		       	.then(res => res.json())
-			    .then(data => {
-			    	
-			    	console.log(data)
-			    	Swal.fire({
-		               title: 'Loan Application Approve',
-		               text: 'The loan application has been approved.',
-		               icon:'success'
-		             })
-			    })
-		    } else {
-		      	Swal.close();
-		    }
-		 });
-   }
-
-
-   const handlePayment = (id, amount, employeeNumber, overDueStat,event) => {
-
-       event.preventDefault();
+	if (e) {
+		
+       e.preventDefault();
        
        if (overDueStat===false) {
 
@@ -255,7 +215,75 @@ export default function LoanSummary({firstName, lastName, loan, fetchData}) {
 			    }
 			  });
        }
-    }
+	}
+    }, [dollarUSLocale]);
+
+	useEffect(() => {
+	  if (paymentSchedules) {
+	    const paymentSchedules1 = paymentSchedules.map(schedule => (
+	      <tr key={schedule._id}>
+	        <td>{formatDate(schedule.date)}</td>
+	        <td>{dollarUSLocale.format(schedule.amount)}</td>
+	        <td>{(schedule.paidStatus) ? "Paid" : "Not Paid"}</td>
+	        <td>{(schedule.overDueStat) ? `Overdue: ${dollarUSLocale.format(schedule.amount*.01)}` : ``}</td>
+	        <td>
+	          {schedule.paidStatus 
+	            ? `Paid: ${dollarUSLocale.format(schedule.AmountPaid)}` 
+	            : pendingStat ? "For Approval" : <button onClick={(e) => handlePayment(schedule._id, schedule.amount, employeeNumber, schedule.overDueStat, e)}>Pay Due</button> }
+	        </td>
+	      </tr>
+	    ));
+	    setPaymentSchedules2(paymentSchedules1)
+	  }
+
+	  handlePayment();
+	}, [paymentSchedules, pendingStat, employeeNumber, dollarUSLocale,handlePayment])
+	
+	const closeEdit = () => {
+		setShowEdit(false);
+	}
+ 
+   const approveLoan = (event) =>{  	
+    	event.preventDefault();
+    	Swal.fire({
+		    title: `Confirm loan approval`,
+		    text: `Are you sure you want to confirm this loan?`,
+		    icon: 'warning',
+		    showCancelButton: true,
+		    confirmButtonText: 'Yes, confirm',
+		    cancelButtonText: 'Cancel',
+		    reverseButtons: true
+		  }).then((result) => {
+		    
+		    if (result.isConfirmed) {
+		      
+	       		fetch(`https://bnhscoopbackend.herokuapp.com/loans/approveLoan/${loanID}`, 
+		       	{
+				    method: 'PUT',
+				    headers: {
+				      'Content-Type': 'application/json',
+				      Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+				      'Accept': 'application/json'
+				    }
+			 	})
+		       	.then(res => res.json())
+			    .then(data => {
+			    	
+			    	console.log(data)
+			    	Swal.fire({
+		               title: 'Loan Application Approve',
+		               text: 'The loan application has been approved.',
+		               icon:'success'
+		             })
+			    })
+		    } else {
+		      	Swal.close();
+		    }
+		 });
+   }
+
+
+
 
     function formatDate(isoDate) {
 	  const dateObj = new Date(isoDate);
@@ -267,8 +295,7 @@ export default function LoanSummary({firstName, lastName, loan, fetchData}) {
 	}
 
 
-  	let dollarUSLocale = Intl.NumberFormat('en-US');
-
+  
 	return(
 		<>
 			<Button style={{ backgroundColor: '#FF66C4' }}
