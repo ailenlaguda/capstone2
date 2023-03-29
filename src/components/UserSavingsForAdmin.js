@@ -14,7 +14,7 @@ export default function UserSavingsForAdmin({email, fetchData}) {
 	const [showEdit, setShowEdit] = useState(false)
 
 	const UserSavingsForAdmin = (email) => {
-	  fetch(`http://localhost:4000/users/savingsRecordsForAdmin/${email}`, {
+	  fetch(`https://bnhscoopbackend.herokuapp.com/users/savingsRecordsForAdmin/${email}`, {
 	    method: 'GET',
 	    headers: {
 	      'Content-Type': 'application/json',

@@ -34,7 +34,7 @@ export default function MyAccount(){
 	const fetchDataOrder = () => {
 		
 		// fetch('https://laguda-grocery-store-ol-shop.herokuapp.com/orders/all-auth-orders',{
-		fetch(`http://localhost:4000/users/oneRecord/${localStorage.getItem('id')}`,{
+		fetch(`https://bnhscoopbackend.herokuapp.com/users/oneRecord/${localStorage.getItem('id')}`,{
 		// fetch(`http://localhost/users/oneRecord/${user._id}`,{
 			method: 'GET',
 				headers: {
@@ -59,7 +59,7 @@ export default function MyAccount(){
 	
 
 	const loans = () => {
-		fetch(`http://localhost:4000/loans/loanRecord/${localStorage.getItem('id')}`,{
+		fetch(`https://bnhscoopbackend.herokuapp.com/loans/loanRecord/${localStorage.getItem('id')}`,{
 		// fetch(`http://localhost/users/oneRecord/${user._id}`,{
 			method: 'GET',
 				headers: {
@@ -85,7 +85,7 @@ export default function MyAccount(){
 
 	
 // savings fetching current balance
-	fetch(`http://localhost:4000/savings/indivdualSavingsRecord/${localStorage.getItem('id')}`,{
+	fetch(`https://bnhscoopbackend.herokuapp.com/savings/indivdualSavingsRecord/${localStorage.getItem('id')}`,{
 	// fetch(`http://localhost/users/oneRecord/${user._id}`,{
 		method: 'GET',
 			headers: {
@@ -106,7 +106,7 @@ export default function MyAccount(){
 	})
 	
 	// savings fetching current shared capital totals
-	fetch(`http://localhost:4000/sharedCapitals/indivdualSavingsRecord/${localStorage.getItem('id')}`,{
+	fetch(`https://bnhscoopbackend.herokuapp.com/sharedCapitals/indivdualSavingsRecord/${localStorage.getItem('id')}`,{
 	// fetch(`http://localhost/users/oneRecord/${user._id}`,{
 		method: 'GET',
 			headers: {

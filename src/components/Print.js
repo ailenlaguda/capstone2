@@ -44,7 +44,7 @@ export default function Print({}) {
   const openEdit=(event)=>{
     setShowEdit(true)
 
-    fetch(`http://localhost:4000/users/allRecords`, {
+    fetch(`https://bnhscoopbackend.herokuapp.com/users/allRecords`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

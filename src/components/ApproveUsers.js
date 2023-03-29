@@ -12,7 +12,7 @@ export default function ApproveUsers() {
 
 	const openEdit = () => {
 		setShowEdit(true);
-	  fetch(`http://localhost:4000/users/allRecordsPending`, {
+	  fetch(`https://bnhscoopbackend.herokuapp.com/users/allRecordsPending`, {
 	    method: 'GET',
 	    headers: {
 	      'Content-Type': 'application/json',
@@ -81,7 +81,7 @@ export default function ApproveUsers() {
 		    
 		    if (result.isConfirmed) {
 		      
-	       		fetch(`http://localhost:4000/users/updateActiveStat/${userId}`, 
+	       		fetch(`https://bnhscoopbackend.herokuapp.com/users/updateActiveStat/${userId}`, 
 		       	{
 				    method: 'PUT',
 				    headers: {

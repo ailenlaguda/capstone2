@@ -44,7 +44,7 @@ export default function Home(){
 	function loginUser(e) {
 		e.preventDefault();
 
-		fetch('http://localhost:4000/users/login', {
+		fetch('https://bnhscoopbackend.herokuapp.com/users/login', {
 		// fetch('https://gnhs-ssg-online-voting-system.herokuapp.com/students/login', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },

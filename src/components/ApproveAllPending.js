@@ -35,7 +35,7 @@ export default function ApproveAllPending({firstName, lastName, loan, fetchData}
 	//function for opening the modal
 	const openEdit = () => {
 		setShowEdit(true)
-		fetch(`http://localhost:4000/loans/retrieveAllPendingLoan/`, {
+		fetch(`https://bnhscoopbackend.herokuapp.com/loans/retrieveAllPendingLoan/`, {
 	    method: 'GET',
 	    headers: {
 	      'Content-Type': 'application/json',
@@ -111,7 +111,7 @@ export default function ApproveAllPending({firstName, lastName, loan, fetchData}
 		    
 		    if (result.isConfirmed) {
 		      
-	       		fetch(`http://localhost:4000/loans/approveLoan/${loanID}`, 
+	       		fetch(`https://bnhscoopbackend.herokuapp.com/loans/approveLoan/${loanID}`, 
 		       	{
 				    method: 'PUT',
 				    headers: {

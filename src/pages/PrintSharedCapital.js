@@ -23,7 +23,7 @@ const fetchData = () => {
   const from = new Date(dateFrom).setHours(0, 0, 0, 0);
   const to = new Date(dateTo).setHours(0, 0, 0, 0);
 
-  fetch(`http://localhost:4000/sharedCapitals/indivdualSavingsRecord/${localStorage.getItem('printId')}`, {
+  fetch(`https://bnhscoopbackend.herokuapp.com/sharedCapitals/indivdualSavingsRecord/${localStorage.getItem('printId')}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

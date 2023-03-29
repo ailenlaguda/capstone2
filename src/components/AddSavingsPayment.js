@@ -38,7 +38,7 @@ export default function AddSavingsPayment({ userId, fetchData }) {
           description = 'Deposit';
         }
 
-        fetch(`http://localhost:4000/savings/newSavingsPayment/${userId}`, {
+        fetch(`https://bnhscoopbackend.herokuapp.com/savings/newSavingsPayment/${userId}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 
           Authorization: `Bearer ${localStorage.getItem('accessToken')}` }, 

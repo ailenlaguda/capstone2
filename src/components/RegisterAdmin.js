@@ -57,7 +57,7 @@ export default function RegisterAdmin() {
 		    
 		    if (result.isConfirmed) {
 
-				fetch('http://localhost:4000/users/register', {
+				fetch('https://bnhscoopbackend.herokuapp.com/users/register', {
 					method: 'POST',
 					headers: { 'Content-Type': 'application/json' },
 					body: JSON.stringify({

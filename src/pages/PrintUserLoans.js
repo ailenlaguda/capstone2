@@ -34,7 +34,7 @@ export default function PrintUserLoans() {
 	
 		const fetchData = () => {
 		// fetch('https://laguda-grocery-store-ol-shop.herokuapp.com/orders/all-auth-orders',{
-			fetch(`http://localhost:4000/loans/retrieveLoanAllLoan/${localStorage.getItem('printId')}`,{
+			fetch(`https://bnhscoopbackend.herokuapp.com/loans/retrieveLoanAllLoan/${localStorage.getItem('printId')}`,{
 			// fetch(`http://localhost/users/oneRecord/${user._id}`,{
 				method: 'GET',
 					headers: {
@@ -78,7 +78,7 @@ export default function PrintUserLoans() {
 		console.log(loanId)
 		//to still get the actual data from the form
 		// fetch(`https://mysterious-taiga-31794.herokuapp.com/courses/${ courseId }`)
-		fetch(`http://localhost:4000/loans/loansrecord/${loanId}`)
+		fetch(`https://bnhscoopbackend.herokuapp.com/loans/loansrecord/${loanId}`)
 		.then(res => res.json())
 		.then(data => {
 			//populate all the input values with course info that we fetched

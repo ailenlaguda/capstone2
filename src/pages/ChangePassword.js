@@ -25,7 +25,7 @@ export default function ChangePasswor() {
 			e.preventDefault();
 			
 		// fetch('https://laguda-grocery-store-ol-shop.herokuapp.com/orders/all-auth-orders',{
-			fetch(`http://localhost:4000/users/retrievePass/`,{
+			fetch(`https://bnhscoopbackend.herokuapp.com/users/retrievePass/`,{
 			// fetch(`http://localhost/users/oneRecord/${user._id}`,{
 				method: 'PUT',
 					headers: {

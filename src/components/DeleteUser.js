@@ -17,7 +17,7 @@ export default function DeleteUser({email, fetchData}) {
 				}).then((result) => {
 				
 				if (result.isConfirmed) {
-					fetch(`http://localhost:4000/users/deleteUser/${userId}`, {
+					fetch(`https://bnhscoopbackend.herokuapp.com/users/deleteUser/${userId}`, {
 						method: 'DELETE',
 						headers: {
 							'Content-Type': 'application/json',

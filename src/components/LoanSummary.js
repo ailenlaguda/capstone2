@@ -36,7 +36,7 @@ export default function LoanSummary({firstName, lastName, loan, fetchData}) {
 	//function for opening the modal
 	const openEdit = (loanId) => {
 		setShowEdit(true)
-		fetch(`http://localhost:4000/loans/loanRecord/${loanId}`, {
+		fetch(`https://bnhscoopbackend.herokuapp.com/loans/loanRecord/${loanId}`, {
 	    method: 'GET',
 	    headers: {
 	      'Content-Type': 'application/json',
@@ -131,7 +131,7 @@ export default function LoanSummary({firstName, lastName, loan, fetchData}) {
 		    
 		    if (result.isConfirmed) {
 		      
-	       		fetch(`http://localhost:4000/loans/approveLoan/${loanID}`, 
+	       		fetch(`https://bnhscoopbackend.herokuapp.com/loans/approveLoan/${loanID}`, 
 		       	{
 				    method: 'PUT',
 				    headers: {
@@ -175,7 +175,7 @@ export default function LoanSummary({firstName, lastName, loan, fetchData}) {
 		    
 		    if (result.isConfirmed) {
 		      
-	       		fetch(`http://localhost:4000/loans/loansrecord/${id}`, {
+	       		fetch(`https://bnhscoopbackend.herokuapp.com/loans/loansrecord/${id}`, {
 					    method: 'PUT',
 					    headers: {
 					      'Content-Type': 'application/json',
@@ -232,7 +232,7 @@ export default function LoanSummary({firstName, lastName, loan, fetchData}) {
 			    reverseButtons: true
 			  }).then((result) => {
 			    if (result.isConfirmed) {
-			       fetch(`http://localhost:4000/loans/loansrecord/${id}`, 
+			       fetch(`https://bnhscoopbackend.herokuapp.com/loans/loansrecord/${id}`, 
 			       	{
 					    method: 'PUT',
 					    headers: {

@@ -140,7 +140,7 @@ export default function LoanCalculator() {
   const applyLoan = (e) => {
       // const paymentSchedules = [];
     
-      fetch(`http://localhost:4000/loans/loanRecord/${localStorage.getItem('id')}`,{
+      fetch(`https://bnhscoopbackend.herokuapp.com/loans/loanRecord/${localStorage.getItem('id')}`,{
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -177,7 +177,7 @@ export default function LoanCalculator() {
                   paymentSchedules.shift()
                   // e.preventDefault();
                  
-                 fetch('http://localhost:4000/loans/newLoan', {
+                 fetch('https://bnhscoopbackend.herokuapp.com/loans/newLoan', {
                      method: 'POST',
                      headers: { 'Content-Type': 'application/json' },
                      body: JSON.stringify({

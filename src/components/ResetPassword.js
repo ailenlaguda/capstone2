@@ -18,7 +18,7 @@ export default function ResetPassword({email, fetchData}) {
 
 			if (result.isConfirmed) {
 
-				fetch(`http://localhost:4000/users/ResetPass/${email}`, {
+				fetch(`https://bnhscoopbackend.herokuapp.com/users/ResetPass/${email}`, {
 					method: 'PUT',
 					headers: {
 						'Content-Type': 'application/json',

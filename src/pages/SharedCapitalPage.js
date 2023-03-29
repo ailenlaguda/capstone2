@@ -22,7 +22,7 @@ export default function SharedCapitalPage() {
   
     const fetchData = () => {
     // fetch('https://laguda-grocery-store-ol-shop.herokuapp.com/orders/all-auth-orders',{
-      fetch(`http://localhost:4000/sharedCapitals/indivdualSavingsRecord/${localStorage.getItem('id')}`,{
+      fetch(`https://bnhscoopbackend.herokuapp.com/sharedCapitals/indivdualSavingsRecord/${localStorage.getItem('id')}`,{
       // fetch(`http://localhost/users/oneRecord/${user._id}`,{
         method: 'GET',
           headers: {

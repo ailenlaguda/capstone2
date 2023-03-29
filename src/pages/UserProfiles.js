@@ -22,7 +22,7 @@ export default function UserProfiles() {
 
 		const fetchData = () => {
 		// fetch('https://laguda-grocery-store-ol-shop.herokuapp.com/orders/all-auth-orders',{
-			fetch(`http://localhost:4000/users/oneRecord/${localStorage.getItem('id')}`,{
+			fetch(`https://bnhscoopbackend.herokuapp.com/users/oneRecord/${localStorage.getItem('id')}`,{
 			// fetch(`http://localhost/users/oneRecord/${user._id}`,{
 				method: 'GET',
 					headers: {
@@ -66,7 +66,7 @@ export default function UserProfiles() {
 	const editProfile = (e) => {
 		e.preventDefault();
 
-		fetch(`http://localhost:4000/users/editProfile/`,{
+		fetch(`https://bnhscoopbackend.herokuapp.com/users/editProfile/`,{
 			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json',
