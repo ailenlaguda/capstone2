@@ -1,5 +1,5 @@
 import { Button, Modal, Form, Container, Row, Table, Col } from 'react-bootstrap';
-import React, { useState, useEffect} from 'react';
+import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,22 +7,11 @@ import { faEye  } from '@fortawesome/free-solid-svg-icons';
 
 export default function LoanSummary({firstName, lastName, loan, fetchData}) {
 
-	//state for courseId for the fetch URL
-	const [loanId, setLoanId] = useState('');
-
-	//Forms state
-	//Add state for the forms of course
-	const [loanData, setLoanData] = useState([]);
-	const [loans, setLoans] = useState([])
-
 	const [date, setDate] = useState('');
 	const [currLoanBalance, setcurrLoanBalance] = useState('');
 	const [principalAmount, setPrincipalAmount] = useState('');
 	const [interest, setInterest] = useState('');
 	const [term, setTerm] = useState('');
-	const [isActive, setIsActive] = useState('');
-	const [description, setDescription] = useState('');
-	const [transType, setTransType] = useState('');
 	const [paymentSchedules, setPaymentSchedules] = useState([]);
 	const [paymentSchedules2, setPaymentSchedules2] = useState([]);
 	const [pending, setPending] = useState([]);
@@ -64,7 +53,6 @@ export default function LoanSummary({firstName, lastName, loan, fetchData}) {
 	            setPrincipalAmount(data.principalAmount);
 	            setInterest(data.interest);
 	            setTerm(data.term);
-	            setIsActive(data.isActive);
 	            setPaymentSchedules(data.paymentSchedules);
 	            setEmployeeNumber(data.employeeNumber);
 	            if (data.applicationStatus !== "Pending") {
@@ -113,10 +101,7 @@ export default function LoanSummary({firstName, lastName, loan, fetchData}) {
 	const closeEdit = () => {
 		setShowEdit(false);
 	}
-
-	const [paymentAmount, setPaymentAmount] = useState(0);
-
-   
+ 
    const approveLoan = (event) =>{  	
     	event.preventDefault();
     	Swal.fire({

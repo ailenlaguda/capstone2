@@ -1,7 +1,7 @@
 import { Button} from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUndo, faTrash  } from '@fortawesome/free-solid-svg-icons';
+import { faUndo } from '@fortawesome/free-solid-svg-icons';
 
 export default function ResetPassword({email, fetchData}) {
 	

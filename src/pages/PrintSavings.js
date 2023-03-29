@@ -11,10 +11,8 @@ import { useNavigate } from "react-router-dom";
 export default function PrintSavings() {
 const navigate = useNavigate();
 
-const [startDate, setStartDate] = useState(null);
 const [savings, setSavings] = useState([]);
 const [savingsData, setSavingsData] =  useState([]);
-const [savingsInterests, setsavingsInterest] =  useState([]);
 const [currTotalSavings, setCurrTotalSavings] = useState('');
 const [dateFrom, setDateFrom] = useState(new Date());
 const [dateTo, setDateTo] = useState(new Date());

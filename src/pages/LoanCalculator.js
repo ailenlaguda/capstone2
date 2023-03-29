@@ -14,12 +14,6 @@ export default function LoanCalculator() {
       navigate("/myAccount")
     }
   const navigate = useNavigate();
-    const [totalBalanceComputed,setTotalBalanceComputed]=useState('')
-    const [loanAmount, setLoanAmount] = useState(0);
-       const [interestRate, setInterestRate] = useState(0);
-       const [loanTerm, setLoanTerm] = useState(0);
-       const [monthlyPayment, setMonthlyPayment] = useState(0);
-       const [CBU, setCBU] = useState(0);
        const paymentSchedules = [{ amount: 0, date: new Date() }];
        const [isLoanActive,setIsLoanActive] = useState(false)
   // state to storage the values given by the user when filling the input fields
@@ -41,7 +35,6 @@ export default function LoanCalculator() {
   });
 
   // state to storage error message
-  const [error, setError] = useState('');
 
   // event handler to update state when the user enters values
 
@@ -66,7 +59,6 @@ export default function LoanCalculator() {
       actualError = 'All the values must be a positive number';
     }
     if (actualError) {
-      setError(actualError);
       return false;
     }
     return true;
@@ -78,7 +70,6 @@ export default function LoanCalculator() {
   const handleSubmitValues = (e) => {
     e.preventDefault();
     if (isValid()) {
-      setError('');
       calculateResults(userValues);
       console.log(userValues)
     }
@@ -233,7 +224,6 @@ export default function LoanCalculator() {
                     name='amount'
                     placeholder='Loan amount'
                     value={userValues.amount}
-                    onBlur={(e) => setLoanAmount(dollarUSLocale.format(e.target.value))}
                     onChange={(e) => {
                       handleInputChange(e);
                       setUserValues({...userValues, amount: e.target.value});
@@ -249,7 +239,6 @@ export default function LoanCalculator() {
                      value={userValues.years}
                      onChange={(e) => {
                       handleInputChange(e);
-                      setLoanTerm(e.target.value);
                     }}
                   >
                      <option></option>
@@ -319,7 +308,6 @@ export default function LoanCalculator() {
                        disabled
                        onChange={(e) => {
                         handleInputChange(e);
-                        setInterestRate(e.target.value);
                     }}
                    />
                 </Form.Group>

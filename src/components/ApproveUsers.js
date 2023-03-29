@@ -1,9 +1,9 @@
-import { Button, Modal, Form, Container, Row, Table, Col } from 'react-bootstrap';
+import { Button, Modal, Form, Table} from 'react-bootstrap';
 import React, { useState} from 'react';
 import Swal from 'sweetalert2';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye,faCheckCircle, faThumbsUp  } from '@fortawesome/free-solid-svg-icons';
+import { faThumbsUp  } from '@fortawesome/free-solid-svg-icons';
 
 export default function ApproveUsers() {
 
@@ -63,8 +63,6 @@ export default function ApproveUsers() {
 		setShowEdit(false);
 	}
 	
-
-	const [paymentAmount, setPaymentAmount] = useState(0);
 
     const approveUser = (userId, event) =>{
     	event.preventDefault();

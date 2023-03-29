@@ -1,7 +1,7 @@
 import { Button} from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUndo, faTrash  } from '@fortawesome/free-solid-svg-icons';
+import { faTrash  } from '@fortawesome/free-solid-svg-icons';
 
 export default function DeleteUser({email, fetchData}) {
 

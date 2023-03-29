@@ -1,21 +1,17 @@
 import { Button, Modal, Form, Table } from 'react-bootstrap';
-import React, { useState, useEffect } from 'react';
-import Swal from 'sweetalert2';
+import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPrint } from '@fortawesome/free-solid-svg-icons';
-import PrintSharedCapital from '../pages/PrintSharedCapital';
-import PrintSavings from '../pages/PrintSavings';
 import { useNavigate } from 'react-router-dom';
 
 
-export default function Print({}) {
+export default function Print() {
   
   const navigate = useNavigate();
 
   const handleButtonClick = (userID) => {
     localStorage.setItem('printId', userID)
     navigate('/PrintSavings');
-
     // navigate('/PrintSavings', { state: { userID: userID } });
   };
 
@@ -32,10 +28,6 @@ export default function Print({}) {
   const [usersData, setUsersData]=useState([]); 
   const [userToPrint, setUserToPrint]=useState(''); 
   const [showEdit, setShowEdit] = useState(false)
-
-  const selectWhatToPrint = () => {
-    const options = ['Savings Transactions', 'Shared Capital Transactions', 'Loan Record', "Logs"];
-  }
 
   const closeEdit = () => {
     setShowEdit(false);

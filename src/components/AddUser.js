@@ -7,7 +7,7 @@ import Banner from '../components/Banner';
 
 export default function AddUser(){
 
-	const {user, setUser} = useContext(UserContext);
+	const {user} = useContext(UserContext);
 	const navigate = useNavigate();
 
 	// store values of input fields
@@ -91,7 +91,6 @@ export default function AddUser(){
 				setAddress('');
 				setPosition('');
 				setMemberType('');
-				setUserType('');
 				navigate('/AdminDashboard')
 			} else{
 				Swal.fire({

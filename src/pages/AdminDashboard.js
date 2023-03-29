@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Table, Row, Container, Col, Button,Form } from 'react-bootstrap';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
+import { Table, Row, Container, Col,Form } from 'react-bootstrap';
 import ResetPassword from '../components/ResetPassword';
 import DeleteUser from '../components/DeleteUser';
 import LoanSummary from '../components/LoanSummary';
@@ -9,54 +9,84 @@ import ApproveAllPending from '../components/ApproveAllPending';
 import RegisterAdmin from '../components/RegisterAdmin';
 import ApproveUsers from '../components/ApproveUsers';
 import Print from '../components/Print';
+import UserContext from '../UserContext';
+import { Navigate } from 'react-router-dom';
+
+
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserEdit, faUserPlus,faPrint,faCheckCircle, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faUserEdit } from '@fortawesome/free-solid-svg-icons';
+
 export default function AdminDashboard() {
+
+
+	const {user} = useContext(UserContext);
 
 	const [usersData, setusersData] = useState([]);
 	const [initialLoad, setInitialLoad] = useState(true)
 
-	const fetchData = () => {
-	  fetch(`https://bnhscoopbackend.herokuapp.com/users/allRecords`, {
-	    method: 'GET',
-	    headers: {
-	      'Content-Type': 'application/json',
-	      Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-	      'Accept': 'application/json'
-	    }
-	  })
-	    .then(res => res.json())
-	    .then(data => {
-	      
-	      if (data && Array.isArray(data)){
-	        
-	        const savingsArr = data.map(saving => (
-	          <tr key={saving._id}>
-	            <td>{saving._id}</td>
-	            {/*<td>{saving.email}</td>*/}
-	            <td>{saving.firstName}</td>
-	            <td>{saving.middleName}</td>
-	            <td>{saving.lastName}</td>
-	            <td>{saving.cp}</td>
-	            <td>{saving.position}</td>
-	            {/*<td>{saving.tin}</td>
-	            <td>{saving.sex}</td>*/}
-	            <td><AddSavingsPayment userId={saving._id} fetchData={fetchData}/></td>
-	            <td><SharedCapital userId={saving._id} fetchData={fetchData}/></td>
-	            <td><LoanSummary lastName={saving.lastName} firstName={saving.firstName} loan={saving._id} fetchData={fetchData}/></td>
-	            <td><ResetPassword email={saving.email} fetchData={fetchData}/></td>
-	            <td><DeleteUser email={saving.email} fetchData={fetchData}/></td>
-	          </tr>
-	        ));
-	        setusersData(data);
-	        setFilteredUsersData1(savingsArr);
-	      }
-	    })
-	    .catch(err => {
-	      console.error('Error fetching data:', err);
-	    });
-	}
+
+	 const fetchData = useCallback(async () => {
+		    try {
+		      const response = await fetch(
+		        `https://bnhscoopbackend.herokuapp.com/users/allRecords`,
+		        {
+		          method: "GET",
+		          headers: {
+		            "Content-Type": "application/json",
+		            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+		            Accept: "application/json",
+		          },
+		        }
+		      );
+
+		      const data = await response.json();
+
+		      if (Array.isArray(data)) {
+		        const savingsArr = data.map((saving) => (
+		          <tr key={saving._id}>
+		            <td>{saving._id}</td>
+		            {/*<td>{saving.email}</td>*/}
+		            <td>{saving.firstName}</td>
+		            <td>{saving.middleName}</td>
+		            <td>{saving.lastName}</td>
+		            <td>{saving.cp}</td>
+		            <td>{saving.position}</td>
+		            {/*<td>{saving.tin}</td>
+		            <td>{saving.sex}</td>*/}
+		            <td>
+		              <AddSavingsPayment userId={saving._id} fetchData={fetchData} />
+		            </td>
+		            <td>
+		              <SharedCapital userId={saving._id} fetchData={fetchData} />
+		            </td>
+		            <td>
+		              <LoanSummary
+		                lastName={saving.lastName}
+		                firstName={saving.firstName}
+		                loan={saving._id}
+		                fetchData={fetchData}
+		              />
+		            </td>
+		            <td>
+		              <ResetPassword email={saving.email} fetchData={fetchData} />
+		            </td>
+		            <td>
+		              <DeleteUser email={saving.email} fetchData={fetchData} />
+		            </td>
+		          </tr>
+		        ));
+		        setusersData(data);
+		        setFilteredUsersData1(savingsArr);
+		      }
+		    } catch (error) {
+		      console.error("Error fetching data:", error);
+		    }
+		  }, []);
+
+		  useEffect(() => {
+		    fetchData();
+		  }, []);
 
 	const [filteredUsersData, setFilteredUsersData] = useState([]);
 	const [filteredUsersData1, setFilteredUsersData1] = useState([]);
@@ -95,11 +125,11 @@ export default function AdminDashboard() {
 	  setFilteredUsersData(savingsArr);
 	};
 
-	useEffect(() => {
-		fetchData();
-	}, [fetchData]);
-
 	return(
+		(user.accessToken === null) ?
+						
+			<Navigate to="/" />
+		:
 		<>
 			<Container>
 				<Row>

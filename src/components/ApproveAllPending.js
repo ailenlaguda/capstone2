@@ -1,33 +1,17 @@
-import { Button, Modal, Form, Container, Row, Table, Col } from 'react-bootstrap';
+import { Button, Modal, Form,  Table } from 'react-bootstrap';
 import React, { useState} from 'react';
 import Swal from 'sweetalert2';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye,faCheckCircle  } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle  } from '@fortawesome/free-solid-svg-icons';
 
 export default function ApproveAllPending({firstName, lastName, loan, fetchData}) {
 
 	//state for courseId for the fetch URL
-	const [loanId, setLoanId] = useState('');
 
 	//Forms state
 	//Add state for the forms of course
-	const [loanData, setLoanData] = useState([]);
-	const [loans, setLoans] = useState([])
-
-	const [date, setDate] = useState('');
-	const [currLoanBalance, setcurrLoanBalance] = useState('');
-	const [principalAmount, setPrincipalAmount] = useState('');
-	const [interest, setInterest] = useState('');
-	const [term, setTerm] = useState('');
-	const [isActive, setIsActive] = useState('');
-	const [description, setDescription] = useState('');
-	const [transType, setTransType] = useState('');
-	const [paymentSchedules, setPaymentSchedules] = useState([]);
-	const [pending, setPending] = useState([]);
-	const [pendingStat, setPendingStat] = useState([true]);
-	const [loanID, setLoanID] = useState([true]);
-
+	
 	const [paymentSchedules2, setPaymentSchedules2] = useState([]);
 	//state for editCourse Modals to open/close
 	const [showEdit, setShowEdit] = useState(false)
@@ -93,7 +77,6 @@ export default function ApproveAllPending({firstName, lastName, loan, fetchData}
 		setShowEdit(false);
 	}
 
-	const [paymentAmount, setPaymentAmount] = useState(0);
 
     const approveLoan = (loanID, event) =>{
     	console.log(loanID)
@@ -138,17 +121,6 @@ export default function ApproveAllPending({firstName, lastName, loan, fetchData}
     }
 
 
-
-    function formatDate(isoDate) {
-	  const dateObj = new Date(isoDate);
-	  const year = dateObj.getFullYear();
-	  const month = (dateObj.getMonth() + 1).toString().padStart(2, '0'); // add 1 to month since it's zero-based, and pad with zero if necessary
-	  const day = dateObj.getDate().toString().padStart(2, '0'); // pad with zero if necessary
-	  const formattedDate = `${year}-${month}-${day}`;
-	  return formattedDate;
-	}
-
-  	let dollarUSLocale = Intl.NumberFormat('en-US');
 
 	return(
 		<>

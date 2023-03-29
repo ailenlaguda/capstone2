@@ -4,7 +4,7 @@ import Banner from '../components/Banner'
 import {Link} from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMoneyBillAlt,faMoneyBillWaveAlt, faHandHoldingUsd, faFileContract, faUserCircle  } from '@fortawesome/free-solid-svg-icons';
-import {Navigate, useNavigate} from 'react-router-dom';
+import {Navigate} from 'react-router-dom';
 // import UserLoans from from '../components/UserLoans';
 // import UserSavings from '../components/UserSavings'
 // import UserProfiles from from '../components/UserProfiles';
@@ -15,8 +15,6 @@ export default function MyAccount(){
 	const {user} = useContext(UserContext);
 	// const { user } = useContext (UserContext)
 	// const [allProductsMenu, setProductsMenu] = useState([]);
-	const [usersData, setUserData] = useState([]);
-	const [totalSavings, setTotalSavings] = useState([]);
 	const [currTotalSavings, setCurrTotalSavings] = useState('')
 	const [currTotalSharedCapital, setcurrTotalSharedCapital] = useState('')
 	const [dueDate, setDueDate] = useState(new Date());
@@ -25,7 +23,6 @@ export default function MyAccount(){
 	const [middleName, setMiddleName] = useState('');
 	const [lastName, setLastName] = useState('');
 	const [position, setPosition] = useState('');
-	const [sharedCapital, setSharedCapital] = useState('');
 	const [totalLoans, setTotalLoans] = useState('');
 	const [savingAll, setSavingsAll] = useState('');
 	const [sharedCapitalAll, setSharedCapitalAll] = useState('');
@@ -45,13 +42,10 @@ export default function MyAccount(){
 		})
 		.then(res=> res.json())
 		.then (data => {
-			setUserData(data)
-			setTotalSavings(Number.parseFloat(data.totalSavings).toFixed(2))
 			setFirstName(data.firstName)
 			setLastName(data.lastName)
 			setMiddleName(data.middleName)
 			setPosition(data.position)
-			setSharedCapital(data.totalSharedCapital)
 		})
 
 	}
@@ -71,7 +65,6 @@ export default function MyAccount(){
 		.then(res=> res.json())
 		.then (result => {
 			
-			setUserData(result)
 			setTotalLoans(Number.parseFloat(result.currLoanBalance).toFixed(2))
 			// dueDate=result.paymentsSchedules[0].date
 			// setDueDate(result.paymentsSchedules[0].date)

@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Card, Row, Container, Col, Button, Table, Modal, Form } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import { Card, Row, Container, Col, Button, Form } from 'react-bootstrap';
 import {useNavigate} from 'react-router-dom';
 import Swal from 'sweetalert2';
-import {Link} from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye,faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
@@ -41,19 +40,19 @@ export default function ChangePasswor() {
 			})
 			.then(res=> res.json())
 			.then (data => {
-				if (data.message == "Old Password is Incorrect! Try Again") {
+				if (data.message === "Old Password is Incorrect! Try Again") {
 					Swal.fire({
 						title: "Error!",
 						icon: 'error',
 						text: 'Old password incorrect. Try Again'
 					})
-				} else if( data.message == "New Password do not much"){
+				} else if( data.message === "New Password do not much"){
 					Swal.fire({
 						title: "Error!",
 						icon: 'error',
 						text: 'New password do not match'
 					})
-				} else if (data == null){
+				} else if (data === null){
 					Swal.fire({
 						title: "Error!",
 						icon: 'error',
@@ -80,7 +79,7 @@ useEffect(()=>{
 			setIsActive(false);
 		}
 		
-	}, [newPass1,newPass2])
+	}, [newPass1,newPass2,oldPassword])
 
 const navToDashboard = () =>{
 		navigate("/userProfile")
