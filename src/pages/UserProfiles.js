@@ -1,11 +1,15 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Card, Row, Container, Col, Button, Table, Modal, Form } from 'react-bootstrap';
+import React, { useState, useEffect,useContext } from 'react';
+import { Card, Row, Container, Col, Button, Modal, Form } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2';
 import {Link} from 'react-router-dom';
+import UserContext from '../UserContext';
+import { Navigate } from 'react-router-dom';
+
 
 export default function UserProfiles() {
 	const navigate = useNavigate();
+	const {user} = useContext(UserContext);
 
 	const [firstName, setFirstName] = useState('');
 	const [middleName, setMiddleName] = useState('');
@@ -49,19 +53,6 @@ export default function UserProfiles() {
 		fetchData();
 	}, [])
 
-
-	const [showEdit, setShowEdit] = useState(false)
-
-	const openEdit = () => {
-		//to still get the actual data from the form
-		// fetch(`https://mysterious-taiga-31794.herokuapp.com/courses/${ courseId }`)
-		
-		setShowEdit(true)
-	}
-
-	const closeEdit = () => {
-		setShowEdit(false);
-	}
 
 	const editProfile = (e) => {
 		e.preventDefault();
@@ -112,7 +103,11 @@ export default function UserProfiles() {
 	}
 
 	return(
-	<>
+		(user.accessToken === null) ?
+						
+			<Navigate to="/" />
+		:
+		<>
 		<Container>
 			<Row>
 				<Col>

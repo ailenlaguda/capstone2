@@ -12,7 +12,6 @@ export default function UserSavings() {
 	const navigate = useNavigate();
 	const [savings, setSavings] = useState([])
 	const [savingsData, setSavingsData] =  useState([])
-	const [savingsInterests, setsavingsInterest] =  useState([])
 	const [currTotalSavings, setCurrTotalSavings] = useState('')
 	
 

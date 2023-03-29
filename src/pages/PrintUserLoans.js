@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect	 } from 'react';
 import { Table, Row, Container, Col, Button, Modal } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
 import { faPrint } from '@fortawesome/free-solid-svg-icons';
@@ -10,8 +10,8 @@ export default function PrintUserLoans() {
 	const print = () => {
         window.print()
     }
+
   	const navigate = useNavigate();
-	const [loans, setLoans] = useState([])
 	const [loansData, setLoanData] =  useState([])
 	const [loanPayment, setLoanPayment] =  useState([])
 	const [loanPaymentData, setLoanPaymentData] =  useState([])
@@ -33,41 +33,31 @@ export default function PrintUserLoans() {
 	// let dateLocale = new Intl.DateTimeFormat('en-US' /*, o*/)
 	
 		const fetchData = () => {
-		// fetch('https://laguda-grocery-store-ol-shop.herokuapp.com/orders/all-auth-orders',{
-			fetch(`https://bnhscoopbackend.herokuapp.com/loans/retrieveLoanAllLoan/${localStorage.getItem('printId')}`,{
-			// fetch(`http://localhost/users/oneRecord/${user._id}`,{
-				method: 'GET',
-					headers: {
-						'Content-Type': 'application/json',
-						Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-						 'Accept': 'application/json'
-					}
-			})
-			.then(res=> res.json())
-			.then (data => {
-				setLoans(data)
-					
-				const savingsArr = loans.map(saving => {
-					return (
-						<tr key={saving._id}>
-							<td>{formatDate(saving.date)}</td>
-							<td>{dollarUSLocale.format(saving.principalAmount)}</td>
-							<td>{saving.applicationStatus==="Fully Paid" ? "Loan fully paid": dollarUSLocale.format(saving.currLoanBalance)} </td>
-							<td>{saving.term}</td>
-							<td>{<Button variant="primary" size="sm" onClick={() => openEdit(saving._id)}>View</Button>}</td>
-
-						</tr>
-
-					)
-
-				})
-
-				setLoanData(savingsArr)	
-			console.log(savingsArr)
-			})
-
+		  fetch(`https://bnhscoopbackend.herokuapp.com/loans/retrieveLoanAllLoan/${localStorage.getItem('printId')}`,{
+		    method: 'GET',
+		    headers: {
+		      'Content-Type': 'application/json',
+		      Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+		      'Accept': 'application/json'
+		    }
+		  })
+		  .then(res=> res.json())
+		  .then (data => {
+		    const savingsArr = data.map(saving => {
+		      return (
+		        <tr key={saving._id}>
+		          <td>{formatDate(saving.date)}</td>
+		          <td>{dollarUSLocale.format(saving.principalAmount)}</td>
+		          <td>{saving.applicationStatus==="Fully Paid" ? "Loan fully paid": dollarUSLocale.format(saving.currLoanBalance)} </td>
+		          <td>{saving.term}</td>
+		          <td>{<Button variant="primary" size="sm" onClick={() => openEdit(saving._id)}>View</Button>}</td>
+		        </tr>
+		      )
+		    })
+		    setLoanData(savingsArr)
+		    console.log(savingsArr)
+		  })
 		}
-
 		useEffect(() => {
 			fetchData();
 		}, [])
@@ -97,6 +87,7 @@ export default function PrintUserLoans() {
 			)
 			})
 			setLoanPaymentData(savingsInterestArr)
+			console.log(loanPaymentData)
 		})
 
 		//Then, open the modal

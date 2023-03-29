@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Table, Row, Container, Col, Button, Modal } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
 import { faPrint } from '@fortawesome/free-solid-svg-icons';
@@ -6,12 +6,12 @@ import { faPrint } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default function UserLoan() {
-	console.log("YADIS")
+	
 	const print = () => {
         window.print()
     }
   	const navigate = useNavigate();
-	const [loans, setLoans] = useState([])
+
 	const [loansData, setLoanData] =  useState([])
 	const [loanPayment, setLoanPayment] =  useState([])
 	const [loanPaymentData, setLoanPaymentData] =  useState([])
@@ -31,50 +31,40 @@ export default function UserLoan() {
 
 	let dollarUSLocale = Intl.NumberFormat('en-US');
 	// let dateLocale = new Intl.DateTimeFormat('en-US' /*, o*/)
+
+	const fetchData = () => {
+
+		fetch(`https://bnhscoopbackend.herokuapp.com/loans/retrieveLoanAllLoan/${localStorage.getItem('id')}`,{
 	
-		const fetchData = () => {
-		// fetch('https://laguda-grocery-store-ol-shop.herokuapp.com/orders/all-auth-orders',{
-			fetch(`https://bnhscoopbackend.herokuapp.com/loans/retrieveLoanAllLoan/${localStorage.getItem('id')}`,{
-			// fetch(`http://localhost/users/oneRecord/${user._id}`,{
-				method: 'GET',
-					headers: {
-						'Content-Type': 'application/json',
-						Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-						 'Accept': 'application/json'
-					}
-			})
-			.then(res=> res.json())
-			.then (data => {
+			method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+					 'Accept': 'application/json'
+				}
+		})
+		.then(res=> res.json())
+		.then (data => {
 
-				setLoans(data)
-				console.log(data)
-				
+			console.log(data)
 
-				const savingsArr = loans.map(saving => {
-					return (
-						<tr key={saving._id}>
-							<td>{formatDate(saving.date)}</td>
-							<td>{dollarUSLocale.format(saving.principalAmount)}</td>
-							<td>{saving.applicationStatus==="Fully Paid" ? "Loan fully paid": dollarUSLocale.format(saving.currLoanBalance)} </td>
-							<td>{saving.term}</td>
-							<td>{<Button variant="primary" size="sm" onClick={() => openEdit(saving._id)}>View</Button>}</td>
-
-						</tr>
-
-					)
-
-				})
-
-				setLoanData(savingsArr)	
+			const savingsArr = data.map(saving => {
+			    return (
+			        <tr key={saving._id}>
+			            <td>{formatDate(saving.date)}</td>
+			            <td>{dollarUSLocale.format(saving.principalAmount)}</td>
+			            <td>{saving.applicationStatus==="Fully Paid" ? "Loan fully paid": dollarUSLocale.format(saving.currLoanBalance)} </td>
+			            <td>{saving.term}</td>
+			            <td>{<Button variant="primary" size="sm" onClick={() => openEdit(saving._id)}>View</Button>}</td>
+			        </tr>
+			    )
 			})
 
-		}
+			console.log(savingsArr)
+			setLoanData(savingsArr)	
+		})
 
-		useEffect(() => {
-			fetchData();
-		}, [])
-
-	const [showEdit, setShowEdit] = useState(false)
+	}
 
 	const openEdit = (loanId) => {
 		console.log(loanId)
@@ -104,6 +94,14 @@ export default function UserLoan() {
 		//Then, open the modal
 		setShowEdit(true)
 	}
+
+	useEffect(() => {
+	  fetchData();
+	}, []);
+
+	const [showEdit, setShowEdit] = useState(false)
+
+	
 
 	const closeEdit = () => {
 		setShowEdit(false);
