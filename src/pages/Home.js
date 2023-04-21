@@ -87,6 +87,7 @@ export default function Home(){
 				
 				localStorage.setItem('accessToken', data.accessToken);					
 				localStorage.setItem('memberType', data.memberType);					
+				localStorage.setItem('userType', data.userType);					
 				localStorage.setItem('id', data.id);					
 				localStorage.setItem('email', data.email);
 				
@@ -94,6 +95,7 @@ export default function Home(){
 					accessToken: data.accessToken,
 					email: data.email,
 					userType: data.userType,
+					memberType: data.memberType,
 					_id: data._id
 
 				})

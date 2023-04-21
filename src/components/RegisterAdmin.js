@@ -4,6 +4,9 @@ import Swal from 'sweetalert2';
 import UserContext from '../UserContext';
 import { Navigate } from 'react-router-dom';
 
+import emailjs from 'emailjs-com';
+import { init } from 'emailjs-com';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {  faUserPlus  } from '@fortawesome/free-solid-svg-icons';
 
@@ -39,6 +42,7 @@ export default function RegisterAdmin() {
    const registerUser = (event) =>{
     	
     	event.preventDefault();
+    	
     	Swal.fire({
 		    title: `Confirm Registration of new member`,
 		    text: `Are you sure you want to add ${lastName}, ${firstName}?`,
@@ -51,7 +55,8 @@ export default function RegisterAdmin() {
 		    
 		    if (result.isConfirmed) {
 
-				fetch('https://bnhscoopbackend.herokuapp.com/users/register', {
+				fetch('http://localhost:4000/users/register', {
+				// fetch('https://bnhscoopbackend.herokuapp.com/users/register', {
 					method: 'POST',
 					headers: { 'Content-Type': 'application/json' },
 					body: JSON.stringify({
@@ -75,11 +80,34 @@ export default function RegisterAdmin() {
 					console.log(data)
 					if (data === true){
 
-						Swal.fire({
-						  title: 'Good job!',
-						  text: 'Registration successful! Login Now!',
-						  icon:'success'
-						})
+						const sendActivationEmail = async (userEmail, activationLink) => {
+						  
+
+						  const templateParams = {
+						    to_email: userEmail,
+						    message: "Please click the activation link",
+						    activation_link: data.activationLink,
+						  };
+
+						  try {
+						    await emailjs.send(
+						      'service_y96qp6a', // Replace with your EmailJS service ID
+						      'template_7t8an6u', // Replace with your EmailJS template ID
+						      templateParams,
+						      'HGQnFZsC93TPHkWiz', // Replace with your EmailJS user ID
+						    );
+						    Swal.fire({
+							  title: 'Good job!',
+							  text: 'Registration successful! Tell the member to check his/her email and click the activation link!',
+							  icon:'success'
+							})
+						  } catch (error) {
+						    console.error(`Error sending activation email: ${error}`);
+						    
+						  }
+						};
+
+						
 						
 						setEmployeeNumber('');
 						setEmail('');
@@ -108,7 +136,9 @@ export default function RegisterAdmin() {
 
    }
   
-		
+	
+	
+
 	return(
 	  	(user.accessToken === null) ?
 						
@@ -226,7 +256,7 @@ export default function RegisterAdmin() {
 									value={memberType}
 									onChange={e => {setMemberType(e.target.value);
 										if (e.target.value==="Chairman" || e.target.value==="Treasurer") {
-											setUserType("admin")
+											setUserType("Admin")
 										} else{
 											setUserType("member")
 										}

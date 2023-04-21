@@ -19,12 +19,13 @@ export default function AppNavbar(){
 					<Nav className="ms-auto">
 
 						{ (user.accessToken !== null) ?
-							(localStorage.getItem('memberType', user.memberType) === "Member" ) ?
+							(localStorage.getItem('userType', user.userType) === "member" ) ?
 								<>
 									{/*<Nav.Link as={ Link } to='/'>Home</Nav.Link>*/}
 									<Nav.Link as={ Link } to='/myAccount'>My Account</Nav.Link>
 									<Nav.Link as={ Link } to='/LoanCalculator'>Apply Loan</Nav.Link>	
 									<Nav.Link as={ Link } to='/logout'>Logout</Nav.Link>
+									<Nav.Link as={ Link } to='/HelpPage'>Help</Nav.Link>
 								</>
 							:
 								<>
@@ -33,11 +34,13 @@ export default function AppNavbar(){
 									<Nav.Link as={ Link } to='/LoanCalculator'>Apply Loan</Nav.Link>
 									<Nav.Link as={ Link } to='/AdminDashboard'>Admin Dashboard</Nav.Link>
 									<Nav.Link as={ Link } to='/logout'>Logout</Nav.Link>
+									<Nav.Link as={ Link } to='/HelpPage'>Help</Nav.Link>
 
 								</>
 						:
-							<Nav.Link as={ Link } to='/'>Home</Nav.Link>
-								
+							<>		
+								<Nav.Link as={ Link } to='/'>Home</Nav.Link>
+							</>	
 						}
 
 					</Nav>

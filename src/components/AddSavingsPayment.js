@@ -3,7 +3,8 @@ import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPiggyBank } from '@fortawesome/free-solid-svg-icons';
 
-export default function AddSavingsPayment({ userId, fetchData }) {
+export default function AddSavingsPayment({ userId, activeStatus, fetchData }) {
+
   const handleAddSavingsPayment = (userId) => {
     const options = ['Credit', 'Debit'];
 
@@ -60,8 +61,10 @@ export default function AddSavingsPayment({ userId, fetchData }) {
     });
   };
 
+ 
+  
   return (
-    <>
+    (activeStatus === true) ?
       <Button
         style={{ backgroundColor: '#FF66C4' }}
         className="btnSaving bg-purple"
@@ -72,6 +75,21 @@ export default function AddSavingsPayment({ userId, fetchData }) {
       >
         <FontAwesomeIcon icon={faPiggyBank} /> Add Savings
         
+      </Button>
+
+    :
+
+    <>
+      <Button
+        style={{ backgroundColor: '#FF66C4' }}
+        className="btnSaving bg-purple"
+        variant="secondary"
+        size="sm"
+        disabled
+        title="Add member's savings"
+      >
+        
+        <FontAwesomeIcon icon={faPiggyBank} /> Add Savings
       </Button>
     </>
   );

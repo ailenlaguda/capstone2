@@ -247,7 +247,7 @@ export default function Register(){
 								value={memberType}
 								onChange={e => {setMemberType(e.target.value);
 									if (e.target.value==="Chairman" || e.target.value==="Treasurer") {
-										setUserType("admin")
+										setUserType("Admin")
 									} else{
 										setUserType("member")
 									}

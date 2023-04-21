@@ -79,7 +79,8 @@ export default function ApproveUsers() {
 		    
 		    if (result.isConfirmed) {
 		      
-	       		fetch(`https://bnhscoopbackend.herokuapp.com/users/updateActiveStat/${userId}`, 
+	       		// fetch(`https://bnhscoopbackend.herokuapp.com/users/updateActiveStat/${userId}`, 
+	       		fetch(`http://localhost:4000/users/updateActiveStat/${userId}`, 
 		       	{
 				    method: 'PUT',
 				    headers: {

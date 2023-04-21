@@ -5,7 +5,7 @@ import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye  } from '@fortawesome/free-solid-svg-icons';
 
-export default function LoanSummary({firstName, lastName, loan, fetchData}) {
+export default function LoanSummary({firstName, lastName, activeStatus, loan, fetchData}) {
 
 	const [date, setDate] = useState('');
 	const [currLoanBalance, setcurrLoanBalance] = useState('');
@@ -102,120 +102,120 @@ export default function LoanSummary({firstName, lastName, loan, fetchData}) {
 	
 	const handlePayment = useCallback((id, amount, employeeNumber, overDueStat, e) => {
 
-	if (e) {
-		
-       e.preventDefault();
-       
-       if (overDueStat===false) {
+		if (e) {
+			
+	       e.preventDefault();
+	       
+	       if (overDueStat===false) {
 
-       	Swal.fire({
-		    title: `Confirm Payment not overdue`,
-		    text: `Are you sure you want to pay ${dollarUSLocale.format(amount)}?`,
-		    icon: 'warning',
-		    showCancelButton: true,
-		    confirmButtonText: 'Yes, pay now',
-		    cancelButtonText: 'Cancel',
-		    reverseButtons: true
-		  }).then((result) => {
-		    
-		    if (result.isConfirmed) {
-		      
-	       		fetch(`https://bnhscoopbackend.herokuapp.com/loans/loansrecord/${id}`, {
-					    method: 'PUT',
-					    headers: {
-					      'Content-Type': 'application/json',
-					      Authorization: `Bearer ${localStorage.getItem('accessToken')}`
-					    },
-					    body: JSON.stringify({
-			               amountPaid: amount,
-			               employeeNumber: employeeNumber,
-			               overDueStat:overDueStat
-				       })
-			 		})
-		       	.then(res => res.json())
-			    	.then(data => {
-				    	
-				    	if (data.message === "Loan is fully paid") {
-
-					    	Swal.fire({
-				               title: 'Good job!',
-				               text: 'Payment Confirmed. Loan fully paid',
-				               icon:'success'
-				             })
-					    setShowEdit(false);
-				    	} else if(data.message === "Loan payment confirm") {
-						    Swal.fire({
-					               title: 'Good Job',
-					               text: 'Loan payment confirmed.',
-					               icon:'success'
-					             })
-						    setShowEdit(false);
-
-				    	}else{
-				    		Swal.fire({
-					               title: 'Error',
-					               text: 'Please contact IT Admin.',
-					               icon:'error'
-					             })
-						    setShowEdit(false);
-				    	}
-			    })
-		    } else {
-		      	Swal.close();
-		    }
-		 });
-
-       } else {
-	      
-       		Swal.fire({
-			    title: `Confirm Payment`,
-			    text: `Are you sure you want to pay ${dollarUSLocale.format(amount + (amount*.03))}?`,
+	       	Swal.fire({
+			    title: `Confirm Payment not overdue`,
+			    text: `Are you sure you want to pay ${dollarUSLocale.format(amount)}?`,
 			    icon: 'warning',
 			    showCancelButton: true,
 			    confirmButtonText: 'Yes, pay now',
 			    cancelButtonText: 'Cancel',
 			    reverseButtons: true
 			  }).then((result) => {
+			    
 			    if (result.isConfirmed) {
-			       fetch(`https://bnhscoopbackend.herokuapp.com/loans/loansrecord/${id}`, 
-			       	{
-					    method: 'PUT',
-					    headers: {
-					      'Content-Type': 'application/json',
-					      Authorization: `Bearer ${localStorage.getItem('accessToken')}`
-					    },
-					    body: JSON.stringify({
-			               amountPaid: amount + (amount*.03),
-			               overDueStat:overDueStat
-			            })
-				 	})
+			      
+		       		fetch(`https://bnhscoopbackend.herokuapp.com/loans/loansrecord/${id}`, {
+						    method: 'PUT',
+						    headers: {
+						      'Content-Type': 'application/json',
+						      Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+						    },
+						    body: JSON.stringify({
+				               amountPaid: amount,
+				               employeeNumber: employeeNumber,
+				               overDueStat:overDueStat
+					       })
+				 		})
 			       	.then(res => res.json())
-				    .then(data => {
-				    	if (data) {
+				    	.then(data => {
+					    	
+					    	if (data.message === "Loan is fully paid") {
 
-					    	Swal.fire({
-				               title: 'Good job!',
-				               text: 'Payment Confirmed.',
-				               icon:'success'
-				             })
-					    setShowEdit(false);
-				    	} else {
-						    Swal.fire({
-					               title: 'Error',
-					               text: 'Please contact IT Admin.',
-					               icon:'error'
+						    	Swal.fire({
+					               title: 'Good job!',
+					               text: 'Payment Confirmed. Loan fully paid',
+					               icon:'success'
 					             })
 						    setShowEdit(false);
+					    	} else if(data.message === "Loan payment confirm") {
+							    Swal.fire({
+						               title: 'Good Job',
+						               text: 'Loan payment confirmed.',
+						               icon:'success'
+						             })
+							    setShowEdit(false);
 
-				    	}
+					    	}else{
+					    		Swal.fire({
+						               title: 'Error',
+						               text: 'Please contact IT Admin.',
+						               icon:'error'
+						             })
+							    setShowEdit(false);
+					    	}
 				    })
-			      
 			    } else {
-			     	Swal.close();
+			      	Swal.close();
 			    }
-			  });
-       }
-	}
+			 });
+
+	       } else {
+		      
+	       		Swal.fire({
+				    title: `Confirm Payment`,
+				    text: `Are you sure you want to pay ${dollarUSLocale.format(amount + (amount*.03))}?`,
+				    icon: 'warning',
+				    showCancelButton: true,
+				    confirmButtonText: 'Yes, pay now',
+				    cancelButtonText: 'Cancel',
+				    reverseButtons: true
+				  }).then((result) => {
+				    if (result.isConfirmed) {
+				       fetch(`https://bnhscoopbackend.herokuapp.com/loans/loansrecord/${id}`, 
+				       	{
+						    method: 'PUT',
+						    headers: {
+						      'Content-Type': 'application/json',
+						      Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+						    },
+						    body: JSON.stringify({
+				               amountPaid: amount + (amount*.03),
+				               overDueStat:overDueStat
+				            })
+					 	})
+				       	.then(res => res.json())
+					    .then(data => {
+					    	if (data) {
+
+						    	Swal.fire({
+					               title: 'Good job!',
+					               text: 'Payment Confirmed.',
+					               icon:'success'
+					             })
+						    setShowEdit(false);
+					    	} else {
+							    Swal.fire({
+						               title: 'Error',
+						               text: 'Please contact IT Admin.',
+						               icon:'error'
+						             })
+							    setShowEdit(false);
+
+					    	}
+					    })
+				      
+				    } else {
+				     	Swal.close();
+				    }
+				  });
+	       }
+		}
     }, [dollarUSLocale]);
 
 	useEffect(() => {
@@ -284,7 +284,6 @@ export default function LoanSummary({firstName, lastName, loan, fetchData}) {
 
 
 
-
     function formatDate(isoDate) {
 	  const dateObj = new Date(isoDate);
 	  const year = dateObj.getFullYear();
@@ -297,74 +296,81 @@ export default function LoanSummary({firstName, lastName, loan, fetchData}) {
 
   
 	return(
-		<>
+
+		(activeStatus === true) ? 
+		    <>
+				<Button style={{ backgroundColor: '#FF66C4' }}
+			        className="btnSaving bg-purple"
+			        variant="secondary"
+			        size="sm" onClick={() => openEdit(loan)} ><FontAwesomeIcon icon={faEye } /> Loan Record
+			    </Button>
+				<Modal show={showEdit} onHide={closeEdit}>
+					<Form>
+						<Modal.Header closeButton>
+							<Modal.Title>Loan Details of {lastName}, {firstName} </Modal.Title>
+						</Modal.Header>
+
+						<Modal.Body>
+							<Form.Group>
+								<Form.Label>Date</Form.Label>
+								<Form.Control type="text" defaultValue ={formatDate(date)} disabled required/>
+							</Form.Group>
+							<Form.Group>
+							  <Form.Label>Current Loan Balance</Form.Label>
+							  <Form.Control type="text" value={`₱${dollarUSLocale.format(currLoanBalance)}`} readOnly required />
+							</Form.Group>
+							<Form.Group>
+								<Form.Label>Principal Amount</Form.Label>
+								<Form.Control type="text" defaultValue ={`₱${dollarUSLocale.format(principalAmount)}`} disabled required/>
+							</Form.Group>
+							<Form.Group>
+								<Form.Label>Interest</Form.Label>
+								<Form.Control type="text" defaultValue ={`${interest}% (at 1% p.m.)`} disabled required/>
+							</Form.Group>
+							<Form.Group>
+								<Form.Label>Term</Form.Label>
+								<Form.Control type="text" defaultValue ={`${term} months`} disabled required/>
+							</Form.Group>
+							<br />
+							<Form.Group>
+								<Form.Label>Payment Schedule</Form.Label>
+								<Container>
+									<Row>
+										<Col>
+											<Table striped bordered hover responsive>
+												<thead className="bg-dark text-white">
+													<tr>
+														<th>Due Date:</th>
+														<th>Amount</th>
+														<th>Paid Status</th>
+														<th>Penalty</th>
+														<th>Action</th>
+													</tr>
+												</thead>
+
+												<tbody>
+													{paymentSchedules2}
+												</tbody>
+											</Table>
+										</Col>
+									</Row>
+								</Container>
+							</Form.Group>
+								{pending}	
+			               
+			            </Modal.Body>
+						<Modal.Footer>
+							<Button variant="secondary" onClick={closeEdit}>Close</Button>
+						</Modal.Footer>
+					</Form>
+				</Modal>
+			</>
+		:
 			<Button style={{ backgroundColor: '#FF66C4' }}
 		        className="btnSaving bg-purple"
 		        variant="secondary"
-		        size="sm" onClick={() => openEdit(loan)} ><FontAwesomeIcon icon={faEye } /> Loan Record</Button>
-
-		{/*Edit Modal Forms*/}
-			<Modal show={showEdit} onHide={closeEdit}>
-				<Form>
-					<Modal.Header closeButton>
-						<Modal.Title>Loan Details of {lastName}, {firstName} </Modal.Title>
-					</Modal.Header>
-
-					<Modal.Body>
-						<Form.Group>
-							<Form.Label>Date</Form.Label>
-							<Form.Control type="text" defaultValue ={formatDate(date)} disabled required/>
-						</Form.Group>
-						<Form.Group>
-						  <Form.Label>Current Loan Balance</Form.Label>
-						  <Form.Control type="text" value={`₱${dollarUSLocale.format(currLoanBalance)}`} readOnly required />
-						</Form.Group>
-						<Form.Group>
-							<Form.Label>Principal Amount</Form.Label>
-							<Form.Control type="text" defaultValue ={`₱${dollarUSLocale.format(principalAmount)}`} disabled required/>
-						</Form.Group>
-						<Form.Group>
-							<Form.Label>Interest</Form.Label>
-							<Form.Control type="text" defaultValue ={`${interest}% (at 1% p.m.)`} disabled required/>
-						</Form.Group>
-						<Form.Group>
-							<Form.Label>Term</Form.Label>
-							<Form.Control type="text" defaultValue ={`${term} months`} disabled required/>
-						</Form.Group>
-						<br />
-						<Form.Group>
-							<Form.Label>Payment Schedule</Form.Label>
-							<Container>
-								<Row>
-									<Col>
-										<Table striped bordered hover responsive>
-											<thead className="bg-dark text-white">
-												<tr>
-													<th>Due Date:</th>
-													<th>Amount</th>
-													<th>Paid Status</th>
-													<th>Penalty</th>
-													<th>Action</th>
-												</tr>
-											</thead>
-
-											<tbody>
-												{paymentSchedules2}
-											</tbody>
-										</Table>
-									</Col>
-								</Row>
-							</Container>
-						</Form.Group>
-							{pending}	
-		               
-		            </Modal.Body>
-					<Modal.Footer>
-						<Button variant="secondary" onClick={closeEdit}>Close</Button>
-					</Modal.Footer>
-				</Form>
-				
-			</Modal>
-		</>
+		        disabled
+		        size="sm" onClick={() => openEdit(loan)} ><FontAwesomeIcon icon={faEye } /> Loan Record
+		    </Button>	
 	)
 }

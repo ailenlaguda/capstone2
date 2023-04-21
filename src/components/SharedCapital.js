@@ -3,7 +3,7 @@ import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPiggyBank } from '@fortawesome/free-solid-svg-icons';
 
-export default function SharedCapital({ userId, fetchData }) {
+export default function SharedCapital({ userId, activeStatus, fetchData }) {
   
   const handleAddSharedCapital = (userId) => {
     const options = ['Credit', 'Debit'];
@@ -63,8 +63,9 @@ export default function SharedCapital({ userId, fetchData }) {
   };
 
   return (
-    <>
-      <Button
+
+    (activeStatus === true) ?     
+     <Button
         style={{ backgroundColor: '#FF66C4' }}
         className="btnSaving bg-purple"
         variant="secondary"
@@ -75,6 +76,18 @@ export default function SharedCapital({ userId, fetchData }) {
         <FontAwesomeIcon icon={faPiggyBank} /> Add Shared Capital
         
       </Button>
-    </>
+    :
+      <Button
+        style={{ backgroundColor: '#FF66C4' }}
+        className="btnSaving bg-purple"
+        variant="secondary"
+        size="sm"
+        disabled
+        title="Add member's shared capital"
+      >
+        <FontAwesomeIcon icon={faPiggyBank} /> Add Shared Capital
+        
+      </Button>
+    
   );
 }

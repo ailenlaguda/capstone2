@@ -3,7 +3,7 @@ import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUndo } from '@fortawesome/free-solid-svg-icons';
 
-export default function ResetPassword({email, fetchData}) {
+export default function ResetPassword({email, activeStatus, fetchData}) {
 	
 	const resetPassword = (userId) => {
 				
@@ -41,13 +41,17 @@ export default function ResetPassword({email, fetchData}) {
 
 	return(
 
-		<>
-			{/*<Button className= "btnDanger" variant="danger" size="sm" onClick={() => resetPassword(email)}>Reset Password</Button>*/}
+		(activeStatus === true) ?
 			<Button style={{ backgroundColor: "#101F60" }} className="btnDanger" variant="danger" size="sm" onClick={() => resetPassword(email)} title="Click to Reset Password">
   				<FontAwesomeIcon icon={faUndo} /> Reset Password
 			</Button>
+		:
+
+			<Button style={{ backgroundColor: "#101F60" }} className="btnDanger" variant="danger" size="sm" disabled title="Click to Reset Password">
+  				<FontAwesomeIcon icon={faUndo} /> Reset Password
+			</Button>
 				
-		</>
+
 
 		)
 }
