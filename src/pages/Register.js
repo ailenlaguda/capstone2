@@ -4,7 +4,8 @@ import Swal from 'sweetalert2';
 import UserContext from '../UserContext';
 import {Navigate, useNavigate} from 'react-router-dom';
 import Banner from '../components/Banner';
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye,faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 export default function Register(){
 
 	const {user, setUser} = useContext(UserContext);
@@ -94,10 +95,16 @@ export default function Register(){
 				setMemberType('');
 				setUserType('');
 				navigate('/')
+			} else if (data.message === "Email already registered"){
+				Swal.fire({
+				  title: 'Error',
+				  text: 'Email already registered',
+				  icon:'error'
+				})
 			} else{
 				Swal.fire({
 				  title: 'Error',
-				  text: 'Registration unsuccessful! Try again!',
+				  text: 'Registration unsuccessful! Employee ID already exist!',
 				  icon:'error'
 				})
 			}
@@ -108,6 +115,16 @@ export default function Register(){
 	   function handleCheckboxChange(event) {
 	    setIsCheckboxChecked(event.target.checked);
 	  }
+
+
+	const[passwordShown, setPasswordShown] = useState(false);
+
+	  const togglePassword = () => {
+    	// When the handler is invoked
+	    // inverse the boolean state of passwordShown
+	    setPasswordShown(!passwordShown);
+	  };
+
 
 	return (
 
@@ -135,7 +152,7 @@ export default function Register(){
 						<Form.Group>
 							<Form.Label>Password</Form.Label>
 							<Form.Control 
-								type="password"
+								 type={passwordShown ? "text" : "password"}
 								placeholder = "Enter password"
 								required
 								value={password1}
@@ -146,7 +163,7 @@ export default function Register(){
 						<Form.Group>
 							<Form.Label>Password</Form.Label>
 							<Form.Control 
-								type="password"
+								 type={passwordShown ? "text" : "password"}
 								placeholder = "Verify password"
 								required
 								value={password2}
@@ -154,11 +171,19 @@ export default function Register(){
 							/>
 						</Form.Group>
 
+						  <span>
+						    <FontAwesomeIcon 
+						      onClick={togglePassword}
+						      icon={!passwordShown ? faEyeSlash : faEye} 
+						    /> Show/Hide Passwords
+						  </span>
+
 						<Form.Group>
 							<Form.Label>Employeer Number</Form.Label>
 							<Form.Control 
 								placeholder = "ex: 673439"
 								required
+								type="number"
 								value={employeeNumber}
 								onChange={e => setEmployeeNumber(e.target.value)}
 							/>
@@ -215,8 +240,16 @@ export default function Register(){
 							<Form.Control 
 								placeholder = "09190093062"
 								required
+								type="number"
 								value={mobileNum}
-								onChange={e => setMobileNum(e.target.value)}
+								// onChange={e => setMobileNum(e.target.value)}
+								onChange={(e) => {
+							      const input = e.target.value;
+							      if (/^\d{0,12}$/.test(input)) {
+							        setMobileNum(input);
+							      }
+							    }}
+							    maxLength="11"
 							/>
 						</Form.Group>
 						<Form.Group>
@@ -232,7 +265,7 @@ export default function Register(){
 						<Form.Group>
 							<Form.Label>Position</Form.Label>
 							<Form.Control 
-								placeholder = "ex: 0917 1123 3289"
+								placeholder = "ex: Teacher I"
 								required
 								value={position}
 								onChange={e => setPosition(e.target.value)}

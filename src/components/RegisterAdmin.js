@@ -4,8 +4,8 @@ import Swal from 'sweetalert2';
 import UserContext from '../UserContext';
 import { Navigate } from 'react-router-dom';
 
-import emailjs from 'emailjs-com';
-import { init } from 'emailjs-com';
+// import emailjs from 'emailjs-com';
+// import { init } from 'emailjs-com';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {  faUserPlus  } from '@fortawesome/free-solid-svg-icons';
@@ -80,37 +80,41 @@ export default function RegisterAdmin() {
 					console.log(data)
 					if (data === true){
 
-						const sendActivationEmail = async (userEmail, activationLink) => {
+						// const sendActivationEmail = async (userEmail, activationLink) => {
 						  
+						//   const templateParams = {
+						//     to_email: userEmail,
+						//     message: "Please click the activation link",
+						//     activation_link: data.activationLink,
+						//   };
 
-						  const templateParams = {
-						    to_email: userEmail,
-						    message: "Please click the activation link",
-						    activation_link: data.activationLink,
-						  };
-
-						  try {
-						    await emailjs.send(
-						      'service_y96qp6a', // Replace with your EmailJS service ID
-						      'template_7t8an6u', // Replace with your EmailJS template ID
-						      templateParams,
-						      'HGQnFZsC93TPHkWiz', // Replace with your EmailJS user ID
-						    );
-						    Swal.fire({
-							  title: 'Good job!',
-							  text: 'Registration successful! Tell the member to check his/her email and click the activation link!',
-							  icon:'success'
-							})
-						  } catch (error) {
-						    console.error(`Error sending activation email: ${error}`);
+						//   try {
+						//     await emailjs.send(
+						//       'service_y96qp6a', // Replace with your EmailJS service ID
+						//       'template_7t8an6u', // Replace with your EmailJS template ID
+						//       templateParams,
+						//       'HGQnFZsC93TPHkWiz', // Replace with your EmailJS user ID
+						//     );
+						//     Swal.fire({
+						// 	  title: 'Good job!',
+						// 	  text: 'Registration successful! Tell the member to check his/her email and click the activation link!',
+						// 	  icon:'success'
+						// 	})
+						//   } catch (error) {
+						//     console.error(`Error sending activation email: ${error}`);
 						    
-						  }
-						};
+						//   }
 
-						
+						Swal.fire({
+						  title: 'Good job!',
+						  text: 'Registration successful! Member may now log in',
+						  icon:'success'
+						})
 						
 						setEmployeeNumber('');
 						setEmail('');
+						// setPassword1('');
+						// setPassword2('');
 						setFirstName('');
 						setMiddleName('');
 						setLastName('');
@@ -120,11 +124,18 @@ export default function RegisterAdmin() {
 						setPosition('');
 						setMemberType('');
 						setUserType('');
-						setShowEdit(false);
+						// navigate('/')
+			
+					} else if (data.message === "Email already registered"){
+						Swal.fire({
+						  title: 'Error',
+						  text: 'Email already registered',
+						  icon:'error'
+						})
 					} else{
 						Swal.fire({
 						  title: 'Error',
-						  text: 'Registration unsuccessful! Try again!',
+						  text: 'Registration unsuccessful! Employee ID already exist!',
 						  icon:'error'
 						})
 					}
@@ -172,6 +183,7 @@ export default function RegisterAdmin() {
 									placeholder = "ex: 673439"
 									required
 									value={employeeNumber}
+									type="number"
 									onChange={e => setEmployeeNumber(e.target.value)}
 								/>
 							</Form.Group>
@@ -224,8 +236,15 @@ export default function RegisterAdmin() {
 								<Form.Control 
 									placeholder = "09190093062"
 									required
+									type="number"
 									value={mobileNum}
-									onChange={e => setMobileNum(e.target.value)}
+									onChange={(e) => {
+								      const input = e.target.value;
+								      if (/^\d{0,12}$/.test(input)) {
+								        setMobileNum(input);
+								      }
+								    }}
+								    maxLength="11"
 								/>
 							</Form.Group>
 							<Form.Group>
@@ -241,7 +260,7 @@ export default function RegisterAdmin() {
 							<Form.Group>
 								<Form.Label>Position</Form.Label>
 								<Form.Control 
-									placeholder = "ex: 0917 1123 3289"
+									placeholder = "ex: Teacher I"
 									required
 									value={position}
 									onChange={e => setPosition(e.target.value)}

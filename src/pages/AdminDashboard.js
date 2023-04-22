@@ -168,7 +168,7 @@ export default function AdminDashboard() {
 
 
 	return(
-		(user.accessToken === null) ?
+		(user.userType === "Member") ?
 						
 			<Navigate to="/" />
 		:
