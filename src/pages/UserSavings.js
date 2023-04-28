@@ -32,9 +32,10 @@ export default function UserSavings() {
 
 				setSavings(data)
 
-				if ( savings.length > 0) {
-				    const lastTotalSavings = savings[0];
-				    setCurrTotalSavings(lastTotalSavings.currTotalSavings );
+				if (savings.length > 0) {
+				  const sortedSavings = savings.sort((a, b) => new Date(b.date) - new Date(a.date));
+				  const lastTotalSavings = sortedSavings[0];
+				  setCurrTotalSavings(lastTotalSavings.currTotalSavings);
 				}
 				
 
@@ -70,20 +71,42 @@ export default function UserSavings() {
 	const navToDashboard = () =>{
 		navigate("/myAccount")
 	}
-  	let dollarUSLocale = Intl.NumberFormat('en-US');
+let dollarUSLocale = Intl.NumberFormat('en-US', { minimumFractionDigits: 2 });
 
+const [firstName, setFirstName] = useState('');
+  const [middleName, setMiddleName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [position, setPosition] = useState('');
 
+  fetch(`https://bnhscoopbackend.herokuapp.com/users/oneRecord/${localStorage.getItem('id')}`,{
+    // fetch(`http://localhost/users/oneRecord/${user._id}`,{
+      method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+           'Accept': 'application/json'
+        }
+    })
+    .then(res=> res.json())
+    .then (data => {
+      setFirstName(data.firstName)
+      setLastName(data.lastName)
+      setMiddleName(data.middleName)
+      setPosition(data.position)
+    })
 	return(
 		<>
 		<Container>
 			<Row>
+				<div className="text-center my-4">
+					<h1> Savings Transactions</h1>
+				</div>
 				<Col xs={12} md={12}>
-					<div className="text-center my-4">
-						<h1> Savings Transactions</h1>
-					</div>
-					<div>
-						<h3>Current Balance: {`₱${dollarUSLocale.format(currTotalSavings)}`}</h3>
-					</div>
+					 <div> 
+			            <h5>{lastName}, {firstName} {middleName} </h5>
+			            <h5>{position} </h5>
+			            <h5>Total Current Balance: {`₱${dollarUSLocale.format(currTotalSavings)}`} </h5>
+			          </div>
 					<Table striped bordered hover responsive>
 						<thead className="bg-dark text-white">
 							<tr>

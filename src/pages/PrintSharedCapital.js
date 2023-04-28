@@ -19,6 +19,8 @@ const [currTotalSavings, setCurrTotalSavings] = useState('');
 const [dateFrom, setDateFrom] = useState(new Date());
 const [dateTo, setDateTo] = useState(new Date());
 
+
+
 const fetchData = () => {
   const from = new Date(dateFrom).setHours(0, 0, 0, 0);
   const to = new Date(dateTo).setHours(0, 0, 0, 0);
@@ -75,24 +77,49 @@ const fetchData = () => {
 	  return formattedDate;
 	}
 
-  	let dollarUSLocale = Intl.NumberFormat('en-US');
+  	let dollarUSLocale = Intl.NumberFormat('en-US', { minimumFractionDigits: 2 });
 
   	const print = () => {
-        window.print()
+ 
+			  // Print the page
+			  window.print();
+
     }
 
     const navToDashboard = () =>{
 		navigate("/AdminDashboard")
 	}
 
+	const [firstName, setFirstName] = useState('');
+	const [middleName, setMiddleName] = useState('');
+	const [lastName, setLastName] = useState('');
+	const [position, setPosition] = useState('');
+
+	fetch(`https://bnhscoopbackend.herokuapp.com/users/oneRecord/${localStorage.getItem('id')}`,{
+		// fetch(`http://localhost/users/oneRecord/${user._id}`,{
+			method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+					 'Accept': 'application/json'
+				}
+		})
+		.then(res=> res.json())
+		.then (data => {
+			setFirstName(data.firstName)
+			setLastName(data.lastName)
+			setMiddleName(data.middleName)
+			setPosition(data.position)
+		})
+
 	return(
 		<>
 		<Container>
 			<Row>
-				<Col xs={12} md={6}>
 					<div className="text-center my-4">
 						<h1>Print Shared Capital Transactions</h1>
 					</div>
+				<Col xs={12} md={3}>
 					<div>
 						From: <DatePicker
 							  selected={dateFrom}
@@ -107,9 +134,15 @@ const fetchData = () => {
 							  dateFormat="MM/dd/yyyy"
 							/>
 					</div>
-						<h3>Total Current Balance: {`₱${dollarUSLocale.format(currTotalSavings)}`} </h3>
+				</Col>
+				<Col xs={12} md={3}>
+					
+						<h5>{lastName}, {firstName} {middleName} </h5>
+						<h5>{position} </h5>
+						<h5>Total Current Balance: {`₱${dollarUSLocale.format(currTotalSavings)}`} </h5>
 				</Col>
 			</Row>
+			<br />
 			<Row>
 				<Col xs={12} md={6}>
 					<Table striped bordered hover responsive>
@@ -132,8 +165,8 @@ const fetchData = () => {
 					</Table>
 				</Col>
 			</Row>
-			 <Button title="Print Transactions" onClick={() => print()}><FontAwesomeIcon icon={faPrint} /></Button>
-			 <Button  className = "my-3 mx-1" variant="secondary" onClick={()=>navToDashboard()} >Back to Dashboard.</Button>
+			 <Button className="no-print" title="Print Transactions" onClick={() => print()}><FontAwesomeIcon icon={faPrint} /></Button>
+			 <Button  className = "no-print my-3 mx-1" variant="secondary" onClick={()=>navToDashboard()} >Back to Dashboard.</Button>
 		</Container>	
 			
 		</>

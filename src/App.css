@@ -144,3 +144,8 @@
       max-height: 100vh;
     }
 
+@media print {
+  .no-print {
+    display: none;
+  }
+}

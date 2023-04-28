@@ -26,6 +26,8 @@ export default function MyAccount(){
 	const [totalLoans, setTotalLoans] = useState('');
 	const [savingAll, setSavingsAll] = useState('');
 	const [sharedCapitalAll, setSharedCapitalAll] = useState('');
+	const [inactiveLoanCount, setInactiveLoanCount] = useState('');
+	const [loanPendingCount, setLoanPendingCount] = useState('');
 	
 
 	const fetchDataOrder = () => {
@@ -64,17 +66,48 @@ export default function MyAccount(){
 		})
 		.then(res=> res.json())
 		.then (result => {
-			
-			setTotalLoans(Number.parseFloat(result.currLoanBalance).toFixed(2))
-			// dueDate=result.paymentsSchedules[0].date
-			// setDueDate(result.paymentsSchedules[0].date)
-			setAmount(result.paymentSchedules[0].amount)
-			setDueDate(result.paymentSchedules[0].date)
 
+			if (result.message !== "No records found"){
 
-			
+				console.log(result)
+				setTotalLoans(Number.parseFloat(result.currLoanBalance).toFixed(2))
+				// dueDate=result.paymentsSchedules[0].date
+				// setDueDate(result.paymentsSchedules[0].date)
+				setAmount(result.paymentSchedules[0].amount)
+				setDueDate(result.paymentSchedules[0].date)
+			}
+
 		})
 	}
+	
+
+
+	fetch(`https://bnhscoopbackend.herokuapp.com/loans/retrieveLoanAllLoan/${localStorage.getItem('id')}`,{
+		method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+				 'Accept': 'application/json'
+			}
+	})
+	.then(res=> res.json())
+	.then (result => {
+
+
+		 const inactiveLoans = result.filter(loan => !loan.isActive);
+		// Count the number of inactive loans
+		const inactiveLoanCount = inactiveLoans.length;
+		const pending = result.filter(pending =>pending.applicationStatus=="Pending")
+		const pendingCount =pending.length
+		setInactiveLoanCount(inactiveLoanCount);
+		setLoanPendingCount(pendingCount)
+
+	})
+	.catch(error => {
+  	console.error(error);
+});
+	
+
 
 	
 // savings fetching current balance
@@ -127,7 +160,7 @@ export default function MyAccount(){
 	  const formattedDate = `${year}-${month}-${day}`;
 	  return formattedDate;
 	}
-	let dollarUSLocale = Intl.NumberFormat('en-US');
+	let dollarUSLocale = Intl.NumberFormat('en-US', { minimumFractionDigits: 2 });
 	// let dateLocale = new Intl.DateTimeFormat('en-US' /*, o*/)
 
 	useEffect(()=> {
@@ -152,7 +185,7 @@ export default function MyAccount(){
 								<h2>Savings <FontAwesomeIcon icon={faMoneyBillAlt} /></h2>
 							</Card.Title>
 							<Card.Text>
-								Total Savings: Your total savings is <b>&#8369;{dollarUSLocale.format(currTotalSavings)}</b>
+								Total Savings: <b>&#8369;{dollarUSLocale.format(currTotalSavings)}</b>
 								<br/>
 								<br/>
 								<br/>
@@ -208,8 +241,8 @@ export default function MyAccount(){
 							</Card.Title>
 							<Card.Text>
 								<br/>
-								<p>Current Loan Application:
-								<br/>Number of Inactive Loans:</p>
+								<p>Current Loan Application: {loanPendingCount}
+								<br/>Number of Inactive Loans: {inactiveLoanCount}</p>
 
 							</Card.Text>
 						</Card.Body>

@@ -123,7 +123,7 @@ export default function Register(){
     	// When the handler is invoked
 	    // inverse the boolean state of passwordShown
 	    setPasswordShown(!passwordShown);
-	  };
+	};
 
 
 	return (
@@ -190,13 +190,16 @@ export default function Register(){
 						</Form.Group>
 
 						<Form.Group>
-							<Form.Label>First Name</Form.Label>
-							<Form.Control 
-								placeholder = "ex: Juan"
-								required
-								value={firstName}
-								onChange={e => setFirstName(e.target.value)}
-							/>
+						  <Form.Label>First Name</Form.Label>
+						  <Form.Control 
+						    type="text"
+						    placeholder="ex: Juan"
+						    required
+						    value={firstName}
+						    onChange={e => setFirstName(e.target.value)}
+						    pattern="[a-zA-Z]+"
+						    title="Please enter only letters"
+						  />
 						</Form.Group>
 						<Form.Group>
 							<Form.Label>Middle Name</Form.Label>

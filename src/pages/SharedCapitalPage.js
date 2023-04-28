@@ -75,19 +75,44 @@ export default function SharedCapitalPage() {
     return formattedDate;
   }
 
-    let dollarUSLocale = Intl.NumberFormat('en-US');
+let dollarUSLocale = Intl.NumberFormat('en-US', { minimumFractionDigits: 2 });
+
+const [firstName, setFirstName] = useState('');
+  const [middleName, setMiddleName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [position, setPosition] = useState('');
+
+  fetch(`https://bnhscoopbackend.herokuapp.com/users/oneRecord/${localStorage.getItem('id')}`,{
+    // fetch(`http://localhost/users/oneRecord/${user._id}`,{
+      method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+           'Accept': 'application/json'
+        }
+    })
+    .then(res=> res.json())
+    .then (data => {
+      setFirstName(data.firstName)
+      setLastName(data.lastName)
+      setMiddleName(data.middleName)
+      setPosition(data.position)
+    })
 
 
   return(
     <>
     <Container>
       <Row>
-        <Col xs={12} md={12}>
           <div className="text-center my-4">
             <h1> Shared Capital Transactions</h1>
           </div>
-          <div>
-            <h3>Current Balance: {`₱${dollarUSLocale.format(currTotalSavings)}`}</h3>
+        <Col xs={12} md={12}>
+          <div> 
+            <h5>{lastName}, {firstName} {middleName} </h5>
+            <h5>{position} </h5>
+            <h5>Total Current Balance: {`₱${dollarUSLocale.format(currTotalSavings)}`} </h5>
+        
           </div>
           <Table striped bordered hover responsive>
             <thead className="bg-dark text-white">

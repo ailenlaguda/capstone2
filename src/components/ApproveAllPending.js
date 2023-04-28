@@ -29,6 +29,7 @@ export default function ApproveAllPending({firstName, lastName, loan, fetchData}
 	  	})
 	    .then(res => res.json())
 	    .then(data => {
+	    	console.log(data)
 	    	let usersPendingLoan = []
 	      // if (data) {
 	      if (data.message !== "No records found") {

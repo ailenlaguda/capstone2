@@ -175,7 +175,7 @@ export default function Home(){
 									<Button className="mt-1" variant="secondary" onClick={()=>routeChange()}> Cancel </Button>
 								</Row>
 							}
-						<p className="text-center"> Not yet a user? Register Here <Link to={'/register'}>here</Link></p>
+						<p className="text-center"> Not yet a user? Register <Link to={'/register'}>here</Link></p>
 						
 					</Form>
 				</Col>
