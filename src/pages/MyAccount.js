@@ -125,9 +125,10 @@ export default function MyAccount(){
 
 		setSavingsAll(data)
 
-		if ( savingAll.length > 0) {
-		    const lastTotalSavings = savingAll[savingAll.length - 1];
-		    setCurrTotalSavings(lastTotalSavings.currTotalSavings );
+		if (savingAll.length > 0) {
+		  const sortedSavings = savingAll.sort((a, b) => new Date(b.date) - new Date(a.date));
+		  const lastTotalSavings = sortedSavings[0];
+		  setCurrTotalSavings(lastTotalSavings.currTotalSavings);
 		}
 	})
 	
@@ -147,8 +148,9 @@ export default function MyAccount(){
 		setSharedCapitalAll(data)
 
 		if (sharedCapitalAll.length > 0) {
-		    const lastTotalSavings = sharedCapitalAll[sharedCapitalAll.length - 1];
-		    setcurrTotalSharedCapital(lastTotalSavings.currTotalSharedCapital);
+		  const sortedSavings = sharedCapitalAll.sort((a, b) => new Date(b.date) - new Date(a.date));
+		  const lastTotalSavings = sortedSavings[0];
+		  setcurrTotalSharedCapital(lastTotalSavings.currTotalSharedCapital);
 		}
 	})
 
