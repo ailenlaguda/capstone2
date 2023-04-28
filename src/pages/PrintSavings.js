@@ -16,6 +16,8 @@ const [savingsData, setSavingsData] =  useState([]);
 const [currTotalSavings, setCurrTotalSavings] = useState('');
 const [dateFrom, setDateFrom] = useState(new Date());
 const [dateTo, setDateTo] = useState(new Date());
+const [firstName, setFirstName] = useState(new Date());
+const [lastName, setLastName] = useState(new Date());
 
 const fetchData = () => {
   const from = new Date(dateFrom).setHours(0, 0, 0, 0);
@@ -31,7 +33,6 @@ const fetchData = () => {
   })
   .then(res => res.json())
   .then(data => {
-  	console.log(data)
     setSavings(data);
 
     if (savings.length > 0) {
@@ -43,8 +44,6 @@ const fetchData = () => {
       const savingDate = new Date(saving.date).setHours(0, 0, 0, 0);
       return savingDate >= from && savingDate <= to;
     });
-
-    console.log(filteredData);
 
     const savingsArr = filteredData.map(saving => {
       return (
@@ -58,8 +57,29 @@ const fetchData = () => {
     })
 
     setSavingsData(savingsArr);
+
+
+    	 fetch(`https://bnhscoopbackend.herokuapp.com/users/oneRecord/${localStorage.getItem('printId')}`, {
+			    method: 'GET',
+			    headers: {
+			      'Content-Type': 'application/json',
+			      Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+			      Accept: 'application/json'
+			    }
+			  })
+			  .then(res => res.json())
+			  .then(data => {
+			  	setFirstName(data.firstName)
+			  	setLastName(data.lastName)
+			  	console.log(data)
+			  	
+			  })
   })
 }
+
+
+
+
 	useEffect(() => {
 		fetchData();
 	}, [fetchData])
@@ -73,22 +93,23 @@ const fetchData = () => {
 	  return formattedDate;
 	}
 
-  	let dollarUSLocale = Intl.NumberFormat('en-US');
+	let dollarUSLocale = Intl.NumberFormat('en-US');
 
-  	const print = () => {
-        window.print()
-    }
+	const print = () => {
+      window.print()
+  }
 
-     const navToDashboard = () =>{
+  const navToDashboard = () =>{
 		navigate("/AdminDashboard")
 	}
-	return(
+
+		return(
 		<>
 		<Container>
 			<Row>
 				<Col xs={12} md={6}>
 					<div className="text-center my-4">
-						<h1>Prints Savings Transactions</h1>
+						<h1>Print Savings Transactions</h1>
 					</div>
 					<div>
 						From: <DatePicker
@@ -136,4 +157,5 @@ const fetchData = () => {
 		</>
 
 		)
+
 }

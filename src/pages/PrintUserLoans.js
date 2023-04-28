@@ -66,28 +66,25 @@ export default function PrintUserLoans() {
 
 	const openEdit = (loanId) => {
 		console.log(loanId)
-		//to still get the actual data from the form
 		// fetch(`https://mysterious-taiga-31794.herokuapp.com/courses/${ courseId }`)
 		fetch(`https://bnhscoopbackend.herokuapp.com/loans/loansrecord/${loanId}`)
 		.then(res => res.json())
 		.then(data => {
-			//populate all the input values with course info that we fetched
-			// console.log(data)
-			setLoanPayment(data)
 			console.log(data)
+			setLoanPayment(data)
 			
-			const savingsInterestArr = loanPayment.map(savingInt => {
-			return (
-				<tr key={savingInt._id}>
-					<td>{formatDate(savingInt.date)}</td>
-					<td>{dollarUSLocale.format(savingInt.amount)}</td>
-					<td>{savingInt.paidStatus ? "Paid": "Not yet Paid"}</td>
-					
-				</tr>
-			)
+			const savingsInterestArr = data.map(savingInt => {
+				return (
+					<tr key={savingInt._id}>
+						<td>{formatDate(savingInt.date)}</td>
+						<td>{dollarUSLocale.format(savingInt.amount)}</td>
+						<td>{savingInt.paidStatus ? "Paid": "Not yet Paid"}</td>
+					</tr>
+				)
 			})
 			setLoanPaymentData(savingsInterestArr)
-			console.log(loanPaymentData)
+			console.log(savingsInterestArr)
+			console.log(data)
 		})
 
 		//Then, open the modal
