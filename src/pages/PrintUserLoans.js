@@ -1,15 +1,23 @@
-import React, { useState, useEffect	 } from 'react';
+import React, { useState, useEffect,useRef	 } from 'react';
 import { Table, Row, Container, Col, Button, Modal } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
 import { faPrint } from '@fortawesome/free-solid-svg-icons';
-  
+  	import { useReactToPrint } from 'react-to-print';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default function PrintUserLoans() {
 	
-	const print = () => {
-        window.print()
-    }
+	const componentRef = useRef();
+	const componentRef1 = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
+
+  const handlePrintModal = useReactToPrint({
+    content: () => componentRef1.current,
+  });
+
+
 
   	const navigate = useNavigate();
 	const [loansData, setLoanData] =  useState([])
@@ -98,8 +106,15 @@ export default function PrintUserLoans() {
 
 	return(
 		<>
-		<Container>
+		<Container ref={componentRef}>
 			<Row>
+			<div className="text-center my-4">
+	            <img src="bnhs_logo.png" alt="School Logo" />
+	            <h2>Bentuco National High School Faculty Cooperative</h2>
+	            <h3>Bentuco, Gubat, Sorsogon</h3>
+	            <h4> Loans & Savings Management System</h4>
+	            <h4>Loans Transactions</h4>
+        	</div>
 				<Col>
 					<div className="text-center my-4">
 						<h1> Loans Transactions</h1>
@@ -125,7 +140,7 @@ export default function PrintUserLoans() {
 					</Table>
 				</Col>
 			</Row>
-			<Button title="Print Transactions" onClick={() => print()}><FontAwesomeIcon icon={faPrint} /></Button>
+			<Button title="Print Transactions" onClick={handlePrint}><FontAwesomeIcon icon={faPrint} /></Button>
        	 	<Button  className = "my-3 mx-1" variant="secondary" onClick={()=>navToDashboard()} >Back to Dashboard.</Button>
 		</Container>
 				{/*Edit Modal Forms*/}
@@ -134,8 +149,15 @@ export default function PrintUserLoans() {
 							<Modal.Title>Payment Schedules</Modal.Title>
 						</Modal.Header>
 
-						<Modal.Body>
-							<Table striped bordered hover responsive>
+						<Modal.Body ref={componentRef1}>
+						<div className="text-center my-4">
+				            <img src="bnhs_logo.png" alt="School Logo" />
+				            <h2>Bentuco National High School Faculty Cooperative</h2>
+				            <h3>Bentuco, Gubat, Sorsogon</h3>
+				            <h4> Loans & Savings Management System</h4>
+				            <h4>Shared Capital Transactions</h4>
+			        	</div>
+						<Table striped bordered hover responsive>
 								<thead className="bg-dark text-white">
 							<tr>
 								<th>Date</th>
@@ -155,7 +177,7 @@ export default function PrintUserLoans() {
 						</Modal.Body>
 
 						<Modal.Footer>
-							<Button title="Print Transactions" onClick={() => print()}><FontAwesomeIcon icon={faPrint} /></Button>
+							<Button title="Print Transactions" onClick={handlePrintModal}><FontAwesomeIcon icon={faPrint} /></Button>
 							<Button variant="secondary" onClick={closeEdit}>Close</Button>
 						</Modal.Footer>
 				</Modal>

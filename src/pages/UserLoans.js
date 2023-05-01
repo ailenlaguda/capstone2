@@ -1,17 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Table, Row, Container, Col, Button, Modal } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
 import { faPrint } from '@fortawesome/free-solid-svg-icons';
   
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useReactToPrint } from 'react-to-print';
 
 export default function UserLoan() {
 	
-	const print = () => {
-        window.print()
-    }
+	const componentRef = useRef();
+	const componentRef1 = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
   	const navigate = useNavigate();
 
+	const handlePrintModal = useReactToPrint({
+	    content: () => componentRef1.current,
+	  });
 	const [loansData, setLoanData] =  useState([])
 	const [loanPayment, setLoanPayment] =  useState([])
 	const [loanPaymentData, setLoanPaymentData] =  useState([])
@@ -107,11 +113,41 @@ export default function UserLoan() {
 		setShowEdit(false);
 	}
 
-
+	const [firstName, setFirstName] = useState('');
+  const [middleName, setMiddleName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [position, setPosition] = useState('');
+  fetch(`https://bnhscoopbackend.herokuapp.com/users/oneRecord/${localStorage.getItem('id')}`,{
+    // fetch(`http://localhost/users/oneRecord/${user._id}`,{
+      method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+           'Accept': 'application/json'
+        }
+    })
+    .then(res=> res.json())
+    .then (data => {
+      setFirstName(data.firstName)
+      setLastName(data.lastName)
+      setMiddleName(data.middleName)
+      setPosition(data.position)
+    })
 	return(
 		<>
-		<Container>
+		<Container  ref={componentRef}>
 			<Row>
+				<div className="text-center my-4">
+		            <img src="bnhs_logo.png" alt="School Logo" />
+		            <h2>Bentuco National High School Faculty Cooperative</h2>
+		            <h3>Bentuco, Gubat, Sorsogon</h3>
+		            <h4> Loans & Savings Management System</h4>
+		            <h4>Loans Transactions</h4>
+	        	</div>
+	        	<div> 
+			            <h5>{lastName}, {firstName} {middleName} </h5>
+			            <h5>{position} </h5>
+			          </div>
 				<Col>
 					<div className="text-center my-4">
 						<h1> Loans Transactions</h1>
@@ -137,26 +173,29 @@ export default function UserLoan() {
 					</Table>
 				</Col>
 			</Row>
-			<Button title="Print Transactions" onClick={() => print()}><FontAwesomeIcon icon={faPrint} /></Button>
-       	 	<Button  className = "my-3 mx-1" variant="secondary" onClick={()=>navToDashboard()} >Back to Account.</Button>
 		</Container>
+			<Button title="Print Transactions" onClick={handlePrint}><FontAwesomeIcon icon={faPrint} /></Button>
+       	 	<Button  className = "my-3 mx-1" variant="secondary" onClick={()=>navToDashboard()} >Back to Account.</Button>
 				{/*Edit Modal Forms*/}
 				<Modal show={showEdit} onHide={closeEdit}>
 						<Modal.Header closeButton>
 							<Modal.Title>Payment Schedules</Modal.Title>
 						</Modal.Header>
 
-						<Modal.Body>
-							<Table striped bordered hover responsive>
+						<Modal.Body ref={componentRef1}>
+							<div className="text-center my-4">
+					            <img src="bnhs_logo.png" alt="School Logo" />
+					            <h2>Bentuco National High School Faculty Cooperative</h2>
+					            <h3>Bentuco, Gubat, Sorsogon</h3>
+					            <h4> Loans & Savings Management System</h4>
+					            <h4>Loan Payment Schedules</h4>
+				        	</div>
+										<Table striped bordered hover responsive>
 								<thead className="bg-dark text-white">
 							<tr>
 								<th>Date</th>
 								<th>Amount</th>
 								<th>Payment Status</th>
-								{/*<th>Description</th>
-								<th>Price</th>
-								<th>Availability</th>
-								<th colSpan='2'>Actions</th>*/}
 							</tr>
 								</thead>
 
@@ -167,6 +206,7 @@ export default function UserLoan() {
 						</Modal.Body>
 
 						<Modal.Footer>
+							<Button title="Print Transactions" onClick={handlePrintModal}><FontAwesomeIcon icon={faPrint} /></Button>
 							<Button variant="secondary" onClick={closeEdit}>Close</Button>
 						</Modal.Footer>
 				</Modal>

@@ -1,16 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Table, Row, Container, Col, Button } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { faPrint } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from "react-router-dom";
+import { useReactToPrint } from 'react-to-print';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
 export default function PrintSharedCapital() {
 	const navigate = useNavigate();
-
+const componentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
 const [startDate, setStartDate] = useState(null);
 const [savings, setSavings] = useState([]);
 const [savingsData, setSavingsData] =  useState([]);
@@ -79,13 +83,7 @@ const fetchData = () => {
 
   	let dollarUSLocale = Intl.NumberFormat('en-US', { minimumFractionDigits: 2 });
 
-  	const print = () => {
  
-			  // Print the page
-			  window.print();
-
-    }
-
     const navToDashboard = () =>{
 		navigate("/AdminDashboard")
 	}
@@ -114,12 +112,23 @@ const fetchData = () => {
 
 	return(
 		<>
-		<Container>
+		<Container ref={componentRef}>
 			<Row>
+						<div className="text-center my-4">
+            <img src="bnhs_logo.png" alt="School Logo" />
+            <h2>Bentuco National High School Faculty Cooperative</h2>
+            <h3>Bentuco, Gubat, Sorsogon</h3>
+            <h4> Loans & Savings Management System</h4>
+            <h4>Shared Capital Transactions</h4>
+          </div>
 					<div className="text-center my-4">
-						<h1>Print Shared Capital Transactions</h1>
 					</div>
-				<Col xs={12} md={3}>
+					<div>
+						<h5>{lastName}, {firstName} {middleName} </h5>
+						<h5>{position} </h5>
+						<h5>Total Current Balance: {`₱${dollarUSLocale.format(currTotalSavings)}`} </h5>
+					</div>
+				<Col xs={12} md={2}>
 					<div>
 						From: <DatePicker
 							  selected={dateFrom}
@@ -127,24 +136,19 @@ const fetchData = () => {
 							  dateFormat="MM/dd/yyyy"
 							/>
 					</div>
-					<div>
+				</Col>
+				<Col xs={12} md={2}>
 						To: <DatePicker
 							  selected={dateTo}
 							  onChange={(date) => setDateTo(date)}
 							  dateFormat="MM/dd/yyyy"
 							/>
-					</div>
-				</Col>
-				<Col xs={12} md={3}>
 					
-						<h5>{lastName}, {firstName} {middleName} </h5>
-						<h5>{position} </h5>
-						<h5>Total Current Balance: {`₱${dollarUSLocale.format(currTotalSavings)}`} </h5>
 				</Col>
 			</Row>
 			<br />
 			<Row>
-				<Col xs={12} md={6}>
+				<Col xs={12} md={12}>
 					<Table striped bordered hover responsive>
 						<thead className="bg-dark text-white">
 							<tr>
@@ -165,9 +169,9 @@ const fetchData = () => {
 					</Table>
 				</Col>
 			</Row>
-			 <Button className="no-print" title="Print Transactions" onClick={() => print()}><FontAwesomeIcon icon={faPrint} /></Button>
-			 <Button  className = "no-print my-3 mx-1" variant="secondary" onClick={()=>navToDashboard()} >Back to Dashboard.</Button>
 		</Container>	
+			 <Button className="no-print" title="Print Transactions" onClick={handlePrint}><FontAwesomeIcon icon={faPrint} /></Button>
+			 <Button  className = "no-print my-3 mx-1" variant="secondary" onClick={()=>navToDashboard()} >Back to Dashboard.</Button>
 			
 		</>
 

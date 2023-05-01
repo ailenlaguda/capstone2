@@ -1,20 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
 import { Table, Row, Container, Col, Button } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
 import { faPrint } from '@fortawesome/free-solid-svg-icons';
-	
+	import { useReactToPrint } from 'react-to-print';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Report from '../components/Report';
+import { Page, Text, View, Document, Image, PDFViewer  } from '@react-pdf/renderer';
 
 export default function UserSavings() {
-	const print = () => {
-        window.print()
-    }
+	 const componentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
 	const navigate = useNavigate();
 	const [savings, setSavings] = useState([])
 	const [savingsData, setSavingsData] =  useState([])
 	const [currTotalSavings, setCurrTotalSavings] = useState('')
 	
-
 	
 		const fetchData = () => {
 		// fetch('https://laguda-grocery-store-ol-shop.herokuapp.com/orders/all-auth-orders',{
@@ -96,12 +98,16 @@ const [firstName, setFirstName] = useState('');
     })
 	return(
 		<>
-		<Container>
-			<Row>
+		 <Container ref={componentRef}>
+			<Row >
 				<div className="text-center my-4">
-					<h1> Savings Transactions</h1>
-				</div>
-				<Col xs={12} md={12}>
+            <img src="bnhs_logo.png" alt="School Logo" />
+            <h2>Bentuco National High School Faculty Cooperative</h2>
+            <h3>Bentuco, Gubat, Sorsogon</h3>
+            <h4> Loans & Savings Management System</h4>
+            <h4>Shared Capital Transactions</h4>
+        </div>
+				<Col xs={12} md={12} className="print-content">
 					 <div> 
 			            <h5>{lastName}, {firstName} {middleName} </h5>
 			            <h5>{position} </h5>
@@ -127,11 +133,10 @@ const [firstName, setFirstName] = useState('');
 					</Table>
 				</Col>
 			</Row>
-			<Button title="Print Transactions" onClick={() => print()}><FontAwesomeIcon icon={faPrint} /></Button>
-			 <Button  className = "my-3 mx-1" variant="secondary" onClick={()=>navToDashboard()} >Back to Account.</Button>
-		</Container>	
-			
-		</>
+	</Container>
+			<Button title="Print Transactions" onClick={handlePrint}><FontAwesomeIcon icon={faPrint} /></Button>
+			<Button  className = "print-button my-3 mx-1" variant="secondary" onClick={()=>navToDashboard()} >Back to Account</Button>
 
+	</>
 		)
 }

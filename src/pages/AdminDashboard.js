@@ -9,6 +9,7 @@ import ApproveAllPending from '../components/ApproveAllPending';
 import RegisterAdmin from '../components/RegisterAdmin';
 import ApproveUsers from '../components/ApproveUsers';
 import Print from '../components/Print';
+import GenerateAgingReport from '../components/Aging';
 import UserContext from '../UserContext';
 import { Navigate } from 'react-router-dom';
 
@@ -180,11 +181,11 @@ export default function AdminDashboard() {
 							<h1> Manage users <FontAwesomeIcon icon={faUserEdit} /></h1>
 						</div>
 							<Row>
-								<Col xs={12} md={3}>
-									<h2><RegisterAdmin /> <Print /> <ApproveAllPending fetchData={fetchData}/> <ApproveUsers fetchData={fetchData}/>
+								<Col xs={12} md={5}>
+									<h2><RegisterAdmin /> <Print /> <ApproveAllPending fetchData={fetchData}/> <ApproveUsers fetchData={fetchData}/> <GenerateAgingReport fetchData={fetchData}/>
 									</h2>
 								</Col>
-								<Col xs={12} md={5}>
+								<Col xs={12} md={3}>
 								</Col>
 								<Col xs={12} md={2}>
 								  <Form.Group>

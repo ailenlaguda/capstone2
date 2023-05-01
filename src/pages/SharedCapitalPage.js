@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+  import { useReactToPrint } from 'react-to-print';
 import { Table, Row, Container, Col, Button } from 'react-bootstrap';
 
 import { useNavigate } from "react-router-dom";
 import { faPrint } from '@fortawesome/free-solid-svg-icons';
-  
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default function SharedCapitalPage() {
-  const print = () => {
-        window.print()
-    }
+  
+  const componentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
   const navigate = useNavigate();
   const [savings, setSavings] = useState([])
   const [savingsData, setSavingsData] =  useState([])
@@ -22,7 +24,7 @@ export default function SharedCapitalPage() {
   
     const fetchData = () => {
     // fetch('https://laguda-grocery-store-ol-shop.herokuapp.com/orders/all-auth-orders',{
-      fetch(`https://bnhscoopbackend.herokuapp.com/sharedCapitals/indivdualSavingsRecord/${localStorage.getItem('id')}`,{
+    fetch(`https://bnhscoopbackend.herokuapp.com/sharedCapitals/indivdualSavingsRecord/${localStorage.getItem('id')}`,{
       // fetch(`http://localhost/users/oneRecord/${user._id}`,{
         method: 'GET',
           headers: {
@@ -77,7 +79,7 @@ export default function SharedCapitalPage() {
 
 let dollarUSLocale = Intl.NumberFormat('en-US', { minimumFractionDigits: 2 });
 
-const [firstName, setFirstName] = useState('');
+  const [firstName, setFirstName] = useState('');
   const [middleName, setMiddleName] = useState('');
   const [lastName, setLastName] = useState('');
   const [position, setPosition] = useState('');
@@ -99,20 +101,23 @@ const [firstName, setFirstName] = useState('');
       setPosition(data.position)
     })
 
-
   return(
     <>
-    <Container>
+    
+    <Container ref={componentRef}>
       <Row>
           <div className="text-center my-4">
-            <h1> Shared Capital Transactions</h1>
+            <img src="bnhs_logo.png" alt="School Logo" />
+            <h2>Bentuco National High School Faculty Cooperative</h2>
+            <h3>Bentuco, Gubat, Sorsogon</h3>
+            <h4> Loans & Savings Management System</h4>
+            <h4>Shared Capital Transactions</h4>
           </div>
         <Col xs={12} md={12}>
           <div> 
             <h5>{lastName}, {firstName} {middleName} </h5>
             <h5>{position} </h5>
             <h5>Total Current Balance: {`₱${dollarUSLocale.format(currTotalSavings)}`} </h5>
-        
           </div>
           <Table striped bordered hover responsive>
             <thead className="bg-dark text-white">
@@ -134,10 +139,10 @@ const [firstName, setFirstName] = useState('');
           </Table>
         </Col>
       </Row>
-        <Button title="Print Transactions" onClick={() => print()}><FontAwesomeIcon icon={faPrint} /></Button>
-        <Button  className = "my-3 mx-1" variant="secondary" onClick={()=>navToDashboard()} >Back to Account.</Button>
     </Container>  
-      
+
+        <Button title="Print Transactions" onClick={handlePrint}><FontAwesomeIcon icon={faPrint} /></Button>
+        <Button  className = "my-3 mx-1" variant="secondary" onClick={()=>navToDashboard()} >Back to Account.</Button>
     </>
 
     )

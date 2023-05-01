@@ -1,3 +1,4 @@
+import React, { useEffect } from 'react';
 import { Button} from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -39,6 +40,10 @@ export default function DeleteUser({email, fetchData}) {
 			
 
 	}
+
+	useEffect(() => {
+	    DeleteUser();
+	 }, [])
 
 	return(
 
