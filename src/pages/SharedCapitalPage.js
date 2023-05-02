@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-  import { useReactToPrint } from 'react-to-print';
+import { useReactToPrint } from 'react-to-print';
 import { Table, Row, Container, Col, Button } from 'react-bootstrap';
 
 import { useNavigate } from "react-router-dom";

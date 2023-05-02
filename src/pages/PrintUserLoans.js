@@ -2,7 +2,7 @@ import React, { useState, useEffect,useRef	 } from 'react';
 import { Table, Row, Container, Col, Button, Modal } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
 import { faPrint } from '@fortawesome/free-solid-svg-icons';
-  	import { useReactToPrint } from 'react-to-print';
+import { useReactToPrint } from 'react-to-print';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default function PrintUserLoans() {

@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { faPrint } from '@fortawesome/free-solid-svg-icons';
 	import { useReactToPrint } from 'react-to-print';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Report from '../components/Report';
 import { Page, Text, View, Document, Image, PDFViewer  } from '@react-pdf/renderer';
 
 export default function UserSavings() {
@@ -75,7 +74,7 @@ export default function UserSavings() {
 	}
 let dollarUSLocale = Intl.NumberFormat('en-US', { minimumFractionDigits: 2 });
 
-const [firstName, setFirstName] = useState('');
+	const [firstName, setFirstName] = useState('');
   const [middleName, setMiddleName] = useState('');
   const [lastName, setLastName] = useState('');
   const [position, setPosition] = useState('');
